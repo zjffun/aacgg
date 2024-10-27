@@ -1,15 +1,42 @@
+"use client";
+
+import useUser from "@/hooks/useUser";
+import openGithubSignIn from "@/utils/openGithubSignIn";
+import DraftsIcon from "@mui/icons-material/Drafts";
+import InboxIcon from "@mui/icons-material/Inbox";
+import { ListItemButton, ListItemIcon } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
+import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
-import { ListItemButton, ListItemIcon } from "@mui/material";
-import InboxIcon from "@mui/icons-material/Inbox";
-import DraftsIcon from "@mui/icons-material/Drafts";
 
 export default function AlignItemsList() {
+  const { user, isError, isLoading } = useUser();
+
+  if (isLoading) {
+    return <div>loading...</div>;
+  }
+
+  if (isError) {
+    return <div>failed to load</div>;
+  }
+
+  if (!user?.email) {
+    return (
+      <Button
+        onClick={() => {
+          openGithubSignIn();
+        }}
+      >
+        login
+      </Button>
+    );
+  }
+
   return (
     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
       <ListItem alignItems="flex-start">
