@@ -14,8 +14,9 @@ export default function PostImageList({ images }: { images: string[] }) {
       {images.map((img) => (
         <ImageListItem key={img}>
           <Image
-            loader={imageLoader}
-            src={img}
+            // loader not work when using 'output: export'
+            // loader={imageLoader}
+            src={imageLoader({ src: img })}
             width={100}
             height={100}
             loading="lazy"
