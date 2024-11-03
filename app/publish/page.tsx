@@ -5,12 +5,11 @@ import uploadImages from "@/services/uploadImages";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
 import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
-import Image from "next/image";
 import { useState } from "react";
+import PostImageList from "../components/PostImageList";
+import { ContentType } from "../types";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -24,10 +23,6 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const imageLoader = ({ src }: { src: string }) => {
-  return `https://r2.aacgg.com/${src}`;
-};
-
 export default function MultilineTextFields() {
   const [text, setText] = useState("");
   const [images, setImages] = useState<string[]>([]);
@@ -35,12 +30,12 @@ export default function MultilineTextFields() {
   async function submit() {
     const contents = [
       {
-        type: "text",
+        type: ContentType.TEXT,
         content: text,
       },
       ...images.map((img) => {
         return {
-          type: "image",
+          type: ContentType.IMAGE,
           content: img,
         };
       }),
@@ -67,20 +62,7 @@ export default function MultilineTextFields() {
           multiline
           rows={4}
         />
-        <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-          {images.map((img) => (
-            <ImageListItem key={img}>
-              <Image
-                loader={imageLoader}
-                src={img}
-                width={100}
-                height={100}
-                loading="lazy"
-                alt=""
-              />
-            </ImageListItem>
-          ))}
-        </ImageList>
+        <PostImageList images={images} />
         <Button
           component="label"
           role={undefined}

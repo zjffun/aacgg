@@ -13,8 +13,11 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
+import { useRouter } from "next/navigation";
 
 export default function AlignItemsList() {
+  const router = useRouter();
+
   const { user, isError, isLoading } = useUser();
 
   if (isLoading) {
@@ -60,6 +63,19 @@ export default function AlignItemsList() {
         />
       </ListItem>
       <Divider variant="inset" component="li" />
+
+      <ListItem disablePadding>
+        <ListItemButton
+          onClick={() => {
+            router.push("/you/post");
+          }}
+        >
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary="内容" />
+        </ListItemButton>
+      </ListItem>
 
       <ListItem disablePadding>
         <ListItemButton>
