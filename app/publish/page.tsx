@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import PostImageList from "../components/PostImageList";
 import { ContentType } from "../types";
+import { useRouter } from "next/navigation";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -26,6 +27,7 @@ const VisuallyHiddenInput = styled("input")({
 export default function MultilineTextFields() {
   const [text, setText] = useState("");
   const [images, setImages] = useState<string[]>([]);
+  const router = useRouter();
 
   async function submit() {
     const contents = [
@@ -41,9 +43,13 @@ export default function MultilineTextFields() {
       }),
     ];
 
-    const result = createPost({
+    const result = await createPost({
       contents,
     });
+
+    if (result) {
+      router.back();
+    }
   }
 
   return (

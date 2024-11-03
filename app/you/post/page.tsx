@@ -5,6 +5,11 @@ import { ContentType, IPostContent } from "@/app/types";
 import fetcher from "@/services/fetcher";
 import useSWR from "swr";
 
+interface IPost {
+  _id: string;
+  contents: IPostContent[];
+}
+
 function Contents(props: { contents: IPostContent[] }) {
   const text = props.contents.filter((item) => item.type === ContentType.TEXT);
   const images = props.contents.filter(
@@ -23,7 +28,10 @@ function Contents(props: { contents: IPostContent[] }) {
 }
 
 export default function Page() {
-  const { data, error, isLoading } = useSWR(`/api/current-user-posts`, fetcher);
+  const { data, error, isLoading } = useSWR<IPost[]>(
+    `/api/current-user-posts`,
+    fetcher
+  );
 
   if (isLoading) {
     return <div>loading...</div>;
@@ -36,7 +44,7 @@ export default function Page() {
   return (
     <div>
       <ul>
-        {data.map((item) => (
+        {data?.map((item) => (
           <li key={item._id}>
             <Contents contents={item.contents}></Contents>
           </li>
