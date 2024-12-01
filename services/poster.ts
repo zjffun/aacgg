@@ -2,7 +2,7 @@ import getApiOrigin from "@/utils/getApiOrigin";
 
 const poster = (path: string, data: any) => {
   const url = new URL(path, getApiOrigin());
-  return fetch(url, {
+  const reuslt = fetch(url, {
     mode: "cors",
     credentials: "include",
     method: "POST",
@@ -13,6 +13,8 @@ const poster = (path: string, data: any) => {
   }).then((res) => {
     return res.json();
   });
+
+  return reuslt;
 };
 
 export default poster;

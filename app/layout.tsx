@@ -2,6 +2,7 @@ import { Box, Container } from "@mui/material";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import MainNavigation from "./components/MainNavigation";
+import { ToastComp } from "./components/Toast";
 
 import "./globals.css";
 
@@ -37,6 +38,7 @@ export default function RootLayout({
             <MainNavigation></MainNavigation>
           </Box>
         </Container>
+        <ToastComp></ToastComp>
       </body>
     </html>
   );
