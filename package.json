@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "aacgg",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -14,6 +14,7 @@
     "@mui/icons-material": "^6.1.2",
     "@mui/lab": "^6.0.0-beta.10",
     "@mui/material": "^6.1.2",
+    "@sentry/nextjs": "^8",
     "next": "14.2.14",
     "react": "^18",
     "react-dom": "^18",
