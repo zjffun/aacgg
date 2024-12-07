@@ -1,9 +1,9 @@
 import getApiOrigin from "../utils/getApiOrigin";
 
-const fetcher = (path: string) => {
+const fetcher = async (path: string) => {
   const url = new URL(path, getApiOrigin());
 
-  const result = fetch(url, {
+  const result = await fetch(url, {
     mode: "cors",
     credentials: "include",
   }).then((res) => {
