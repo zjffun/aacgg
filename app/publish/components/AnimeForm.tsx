@@ -1,26 +1,59 @@
 "use client";
 
-import { createItem } from "@/services/item";
+import { IEpisode } from "@/services/item";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ObjectId } from "bson";
 
-export default function MultilineTextFields() {
-  const [name, setName] = useState("");
-  const [desc, setDesc] = useState("");
-  const router = useRouter();
+export interface IAnime {
+  _id?: string;
+  name: string;
+  desc: string;
+  episodes: IEpisode[];
+}
+
+export default function MultilineTextFields({
+  anime,
+  onSubmit,
+}: {
+  anime?: IAnime;
+  onSubmit?: (anime: IAnime) => void;
+}) {
+  const [name, setName] = useState(anime?.name || "");
+  const [desc, setDesc] = useState(anime?.desc || "");
+  const [episodes, setEpisodes] = useState(anime?.episodes || []);
 
   async function submit() {
-    const result = await createItem({
+    onSubmit?.({
       name,
       desc,
+      episodes,
     });
+  }
 
-    if (result) {
-      router.back();
-    }
+  function addEpisode() {
+    setEpisodes([
+      {
+        id: new ObjectId().toString(),
+        name: String(episodes.length + 1),
+      },
+      ...episodes,
+    ]);
+  }
+
+  function add10Episode() {
+    const addEpisodes = Array.from({ length: 10 }, (_, i) => ({
+      id: new ObjectId().toString(),
+      name: String(episodes.length + 1 + i),
+    }));
+
+    setEpisodes([...addEpisodes.reverse(), ...episodes]);
+  }
+
+  function removeEpisode(id: string) {
+    setEpisodes(episodes.filter((d) => d.id !== id));
   }
 
   return (
@@ -43,7 +76,21 @@ export default function MultilineTextFields() {
           multiline
           rows={4}
         />
-        <Button onClick={submit}>提交</Button>
+
+        <div>
+          <Button onClick={addEpisode}>Add Episode</Button>
+          <Button onClick={add10Episode}>Add 10 Episode</Button>
+          <ul>
+            {episodes.map((c) => (
+              <li key={c.id}>
+                {c.name}
+                <Button onClick={() => removeEpisode(c.id)}>Remove</Button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <Button onClick={submit}>Submit</Button>
       </div>
     </Box>
   );

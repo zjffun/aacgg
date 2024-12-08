@@ -1,6 +1,13 @@
 import { showToast } from "@/app/components/Toast";
 import captureException from "@/utils/captureException";
 import poster from "./poster";
+import puter from "./puter";
+
+export interface IEpisode {
+  id: string;
+  name: string;
+  watched?: boolean;
+}
 
 export async function createItem(data) {
   try {
@@ -10,6 +17,29 @@ export async function createItem(data) {
   } catch (error) {
     captureException(error);
     showToast("创建失败");
+    return false;
+  }
+}
+
+export async function updateItem(data) {
+  try {
+    const result = await puter("/api/item", data);
+
+    return result;
+  } catch (error) {
+    captureException(error);
+    showToast("修改失败");
+    return false;
+  }
+}
+
+export async function markWathcedEpisodes(data) {
+  try {
+    const result = await puter("/api/mark-watched-episodes", data);
+
+    return result;
+  } catch (error) {
+    captureException(error);
     return false;
   }
 }

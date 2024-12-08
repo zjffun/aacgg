@@ -13,6 +13,7 @@ import { useState } from "react";
 import PostImageList from "../components/PostImageList";
 import { ContentType } from "../types";
 import AnimeForm from "./components/AnimeForm";
+import { createItem } from "@/services/item";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -113,7 +114,17 @@ export default function MultilineTextFields() {
           </div>
         </Box>
       )}
-      {value === "amime" && <AnimeForm></AnimeForm>}
+      {value === "amime" && (
+        <AnimeForm
+          onSubmit={async (data) => {
+            const result = await createItem(data);
+
+            if (result) {
+              router.back();
+            }
+          }}
+        ></AnimeForm>
+      )}
     </Box>
   );
 }

@@ -1,17 +1,28 @@
 "use client";
 
 import * as React from "react";
-import Paper from "@mui/material/Paper";
 import Masonry from "@mui/lab/Masonry";
 import { Box, Button, Tab, Tabs } from "@mui/material";
 import useSWRFetcher from "@/hooks/useSWRFetcher";
 import { useState } from "react";
 import { addTrackItem } from "@/services/item";
+import { useRouter } from "next/navigation";
+import { IAnime } from "../publish/components/AnimeForm";
 
 function ItemContent({ id, name, desc }) {
+  const router = useRouter();
+
   return (
     <div>
-      <div>{name}</div>
+      <div
+        onClick={() => {
+          const searchParams = new URLSearchParams();
+          searchParams.set("id", id);
+          router.push(`/item-detail?${searchParams}`);
+        }}
+      >
+        {name}
+      </div>
       <div>{desc}</div>
       <Button
         onClick={() => {
@@ -27,7 +38,7 @@ function ItemContent({ id, name, desc }) {
 }
 
 function AllItems() {
-  const { data, error, isLoading } = useSWRFetcher<any[]>(`/api/all-items`);
+  const { data, error, isLoading } = useSWRFetcher<IAnime[]>(`/api/all-items`);
   if (isLoading) {
     return <div>loading...</div>;
   }
@@ -59,7 +70,8 @@ function AllItems() {
 }
 
 function TarckItems() {
-  const { data, error, isLoading } = useSWRFetcher<any[]>(`/api/track-items`);
+  const { data, error, isLoading } =
+    useSWRFetcher<IAnime[]>(`/api/track-items`);
 
   if (isLoading) {
     return <div>loading...</div>;
