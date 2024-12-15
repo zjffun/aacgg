@@ -9,6 +9,17 @@ export interface IEpisode {
   watched?: boolean;
 }
 
+export interface IChapters {
+  id: string;
+  name: string;
+  watched?: boolean;
+}
+
+export enum ItemType {
+  COMIC = "COMIC",
+  ANIME = "ANIME",
+}
+
 export async function createItem(data) {
   try {
     const result = await poster("/api/item", data);
@@ -52,6 +63,18 @@ export async function addTrackItem(data) {
   } catch (error) {
     captureException(error);
     showToast("添加失败");
+    return false;
+  }
+}
+
+export async function removeTrackItem(data) {
+  try {
+    const result = await poster("/api/remove-track-item", data);
+
+    return result;
+  } catch (error) {
+    captureException(error);
+    showToast("移除失败");
     return false;
   }
 }

@@ -1,61 +1,61 @@
 "use client";
 
-import { IEpisode, ItemType } from "@/services/item";
+import { IChapters, ItemType } from "@/services/item";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { ObjectId } from "bson";
 
-export interface IAnime {
+export interface IComic {
   _id?: string;
   type: ItemType;
   name: string;
   desc: string;
-  episodes: IEpisode[];
+  chapters: IChapters[];
 }
 
 export default function MultilineTextFields({
-  anime,
+  comic: comic,
   onSubmit,
 }: {
-  anime?: IAnime;
-  onSubmit?: (anime: IAnime) => void;
+  comic?: IComic;
+  onSubmit?: (anime: IComic) => void;
 }) {
-  const [name, setName] = useState(anime?.name || "");
-  const [desc, setDesc] = useState(anime?.desc || "");
-  const [episodes, setEpisodes] = useState(anime?.episodes || []);
+  const [name, setName] = useState(comic?.name || "");
+  const [desc, setDesc] = useState(comic?.desc || "");
+  const [chapters, setChapters] = useState(comic?.chapters || []);
 
   async function submit() {
     onSubmit?.({
-      type: ItemType.ANIME,
+      type: ItemType.COMIC,
       name,
       desc,
-      episodes,
+      chapters,
     });
   }
 
-  function addEpisode() {
-    setEpisodes([
+  function addChapter() {
+    setChapters([
       {
         id: new ObjectId().toString(),
-        name: String(episodes.length + 1),
+        name: String(chapters.length + 1),
       },
-      ...episodes,
+      ...chapters,
     ]);
   }
 
-  function add10Episode() {
-    const addEpisodes = Array.from({ length: 10 }, (_, i) => ({
+  function add10Chapter() {
+    const addChapters = Array.from({ length: 10 }, (_, i) => ({
       id: new ObjectId().toString(),
-      name: String(episodes.length + 1 + i),
+      name: String(chapters.length + 1 + i),
     }));
 
-    setEpisodes([...addEpisodes.reverse(), ...episodes]);
+    setChapters([...addChapters.reverse(), ...chapters]);
   }
 
-  function removeEpisode(id: string) {
-    setEpisodes(episodes.filter((d) => d.id !== id));
+  function removeChapter(id: string) {
+    setChapters(chapters.filter((d) => d.id !== id));
   }
 
   return (
@@ -80,13 +80,13 @@ export default function MultilineTextFields({
         />
 
         <div>
-          <Button onClick={addEpisode}>Add Episode</Button>
-          <Button onClick={add10Episode}>Add 10 Episodes</Button>
+          <Button onClick={addChapter}>Add Chapter</Button>
+          <Button onClick={add10Chapter}>Add 10 Chapters</Button>
           <ul>
-            {episodes.map((c) => (
+            {chapters.map((c) => (
               <li key={c.id}>
                 {c.name}
-                <Button onClick={() => removeEpisode(c.id)}>Remove</Button>
+                <Button onClick={() => removeChapter(c.id)}>Remove</Button>
               </li>
             ))}
           </ul>

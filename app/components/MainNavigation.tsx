@@ -27,14 +27,14 @@ export default function MainNavigation() {
           }
         }}
       >
-        <BottomNavigationAction label="首页" value={PageEnum.Home} />
-        <BottomNavigationAction label="追番" value={PageEnum.TrackAnime} />
+        <BottomNavigationAction label="Home" value={PageEnum.Home} />
+        <BottomNavigationAction label="Fun" value={PageEnum.TrackAnime} />
         <BottomNavigationAction
           icon={<AddBoxOutlined />}
           value={PageEnum.Publish}
         />
-        <BottomNavigationAction label="关注" value={PageEnum.Subscriptions} />
-        <BottomNavigationAction label="我的" value={PageEnum.You} />
+        <BottomNavigationAction label="All" value={PageEnum.Subscriptions} />
+        <BottomNavigationAction label="You" value={PageEnum.You} />
       </BottomNavigation>
     </Paper>
   );

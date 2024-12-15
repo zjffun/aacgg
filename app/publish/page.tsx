@@ -13,7 +13,8 @@ import { useState } from "react";
 import PostImageList from "../components/PostImageList";
 import { ContentType } from "../types";
 import AnimeForm from "./components/AnimeForm";
-import { createItem } from "@/services/item";
+import ComicForm from "./components/ComicForm";
+import { createItem, ItemType } from "@/services/item";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -69,7 +70,8 @@ export default function MultilineTextFields() {
           aria-label="basic tabs example"
         >
           <Tab label="Post" value="post" />
-          <Tab label="Anime" value="amime" />
+          <Tab label="Anime" value={ItemType.ANIME} />
+          <Tab label="Comic" value={ItemType.COMIC} />
         </Tabs>
       </Box>
       {value === "post" && (
@@ -84,7 +86,7 @@ export default function MultilineTextFields() {
               value={text}
               onChange={(event) => setText(event.target.value)}
               id="outlined-multiline-static"
-              label="Multiline"
+              label="Text"
               multiline
               rows={4}
             />
@@ -114,7 +116,7 @@ export default function MultilineTextFields() {
           </div>
         </Box>
       )}
-      {value === "amime" && (
+      {value === ItemType.ANIME && (
         <AnimeForm
           onSubmit={async (data) => {
             const result = await createItem(data);
@@ -124,6 +126,17 @@ export default function MultilineTextFields() {
             }
           }}
         ></AnimeForm>
+      )}
+      {value === ItemType.COMIC && (
+        <ComicForm
+          onSubmit={async (data) => {
+            const result = await createItem(data);
+
+            if (result) {
+              router.back();
+            }
+          }}
+        ></ComicForm>
       )}
     </Box>
   );
