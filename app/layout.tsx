@@ -1,8 +1,6 @@
-import { Box, Container } from "@mui/material";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import MainNavigation from "./components/MainNavigation";
-import { ToastComp } from "./components/Toast";
+import MainContainer from "./components/MainContainer";
 
 import "./globals.css";
 
@@ -32,13 +30,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Container maxWidth="md" sx={{ padding: 0 }}>
-          <Box sx={{ pb: 7 }}>
-            {children}
-            <MainNavigation></MainNavigation>
-          </Box>
-        </Container>
-        <ToastComp></ToastComp>
+        <MainContainer>{children}</MainContainer>
       </body>
     </html>
   );

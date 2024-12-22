@@ -1,51 +1,36 @@
 "use client";
 
 import useSWRFetcher from "@/hooks/useSWRFetcher";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
-import { IAnime } from "../publish/components/AnimeForm";
-import { IEpisode, markWathcedEpisodes } from "@/services/item";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
+import getSubItems from "../common/getSubItems";
+import FavoriteButton from "../components/FavoriteButton";
+import ProgressButton from "../components/ProgressButton";
+import useProgress from "../hooks/useProgress";
+import { IAnime, IEpisode, IProgress } from "../types";
 
 function EpisodeItem({
-  itemId,
+  progress,
   id,
   name,
-  watched,
-}: IEpisode & { itemId: string }) {
-  const [currentWatched, setCurrentWatched] = useState(watched);
+}: IEpisode & { progress?: IProgress[] }) {
+  const currentWatched = progress?.some((d) => d.id === id);
 
-  const toggleWatched = async () => {
-    if (!currentWatched) {
-      const result = await markWathcedEpisodes({
-        itemId,
-        episodeIds: [id],
-      });
-
-      if (result) {
-        setCurrentWatched(true);
-      }
-    }
-  };
-
-  return (
-    <>
-      {name}
-      <Button onClick={() => toggleWatched()}>
-        {currentWatched ? "watched" : "unwatched"}
-      </Button>
-    </>
-  );
+  return <Button color={currentWatched ? "success" : "primary"}>{name}</Button>;
 }
 
 function Content() {
   const router = useRouter();
   const params = useSearchParams();
   const id = params.get("id");
+  const { progress, updateProgress } = useProgress({ id });
 
   const { data, error, isLoading } = useSWRFetcher<IAnime>(
     `/api/get-item/${id}`
   );
+
+  const subItem = getSubItems(data);
 
   if (!id) {
     return <div>no id</div>;
@@ -60,16 +45,34 @@ function Content() {
   }
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <div>{data?.name}</div>
-      <div>{data?.desc}</div>
-      <ul>
-        {data?.episodes.map((c) => (
-          <li key={c.id}>
-            <EpisodeItem itemId={id} {...c}></EpisodeItem>
-          </li>
+    <Box sx={{ padding: 2 }}>
+      {data?.name && (
+        <Typography gutterBottom variant="subtitle1">
+          {data?.name}
+        </Typography>
+      )}
+
+      {data?.desc && (
+        <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>
+          {data?.desc}
+        </Typography>
+      )}
+
+      <Stack direction="row" spacing={1}>
+        <FavoriteButton id={data?._id}></FavoriteButton>
+        <ProgressButton
+          itemId={data?._id}
+          progress={progress}
+          subItem={subItem}
+          updateProgress={updateProgress}
+        ></ProgressButton>
+      </Stack>
+
+      <Stack direction="row" sx={{ flexWrap: "wrap" }} spacing={0}>
+        {subItem.map((c) => (
+          <EpisodeItem key={c.id} {...c} progress={progress}></EpisodeItem>
         ))}
-      </ul>
+      </Stack>
 
       <Button
         onClick={() => {

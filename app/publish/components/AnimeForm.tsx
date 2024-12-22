@@ -1,19 +1,11 @@
 "use client";
 
-import { IEpisode, ItemType } from "@/services/item";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { ObjectId } from "bson";
-
-export interface IAnime {
-  _id?: string;
-  type: ItemType;
-  name: string;
-  desc: string;
-  episodes: IEpisode[];
-}
+import { IAnime, ItemType } from "@/app/types";
 
 export default function MultilineTextFields({
   anime,

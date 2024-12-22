@@ -11,10 +11,10 @@ import TextField from "@mui/material/TextField";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import PostImageList from "../components/PostImageList";
-import { ContentType } from "../types";
+import { ContentType, ItemType } from "../types";
 import AnimeForm from "./components/AnimeForm";
 import ComicForm from "./components/ComicForm";
-import { createItem, ItemType } from "@/services/item";
+import { createItem } from "@/services/item";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",

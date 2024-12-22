@@ -3,13 +3,10 @@
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Image from "next/image";
+import imageLoader from "../common/imageLoader";
 
 const size = 164;
 const cols = 3;
-
-const imageLoader = ({ src, size }: { src: string; size: number }) => {
-  return `https://aacgg.com/cdn-cgi/image/width=${size},height=${size},fix=crop,format=auto,quality=75/https://r2.aacgg.com/${src}`;
-};
 
 export default function PostImageList({ images }: { images: string[] }) {
   return (

@@ -1,41 +1,11 @@
 "use client";
 
 import * as React from "react";
-import Masonry from "@mui/lab/Masonry";
-import { Box, Button, Tab, Tabs } from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import useSWRFetcher from "@/hooks/useSWRFetcher";
 import { useState } from "react";
-import { addTrackItem, ItemType } from "@/services/item";
-import { useRouter } from "next/navigation";
-import { IAnime } from "../publish/components/AnimeForm";
-
-function ItemContent({ id, name, desc }) {
-  const router = useRouter();
-
-  return (
-    <div>
-      <div
-        onClick={() => {
-          const searchParams = new URLSearchParams();
-          searchParams.set("id", id);
-          router.push(`/item-detail?${searchParams}`);
-        }}
-      >
-        {name}
-      </div>
-      <div>{desc}</div>
-      <Button
-        onClick={() => {
-          addTrackItem({
-            itemId: id,
-          });
-        }}
-      >
-        Tarck
-      </Button>
-    </div>
-  );
-}
+import { IAnime, ItemType } from "../types";
+import ItemGrid from "../components/ItemGrid";
 
 function AllItems() {
   const { data, error, isLoading } = useSWRFetcher<IAnime[]>(`/api/all-items`);
@@ -55,16 +25,7 @@ function AllItems() {
         padding: 2,
       }}
     >
-      <Masonry columns={2} spacing={2}>
-        {_data.map((d) => (
-          <ItemContent
-            key={d._id}
-            id={d._id}
-            name={d.name}
-            desc={d.desc}
-          ></ItemContent>
-        ))}
-      </Masonry>
+      <ItemGrid itemList={_data}></ItemGrid>
     </Box>
   );
 }
@@ -90,16 +51,7 @@ function TarckItems() {
         padding: 2,
       }}
     >
-      <Masonry columns={2} spacing={2}>
-        {_data.map((d) => (
-          <ItemContent
-            key={d._id}
-            id={d._id}
-            name={d.name}
-            desc={d.desc}
-          ></ItemContent>
-        ))}
-      </Masonry>
+      <ItemGrid itemList={_data}></ItemGrid>
     </Box>
   );
 }
@@ -125,16 +77,7 @@ function ComicItems() {
         padding: 2,
       }}
     >
-      <Masonry columns={2} spacing={2}>
-        {_data.map((d) => (
-          <ItemContent
-            key={d._id}
-            id={d._id}
-            name={d.name}
-            desc={d.desc}
-          ></ItemContent>
-        ))}
-      </Masonry>
+      <ItemGrid itemList={_data}></ItemGrid>
     </Box>
   );
 }

@@ -1,19 +1,11 @@
 "use client";
 
-import { IChapters, ItemType } from "@/services/item";
+import { IComic, ItemType } from "@/app/types";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
 import { ObjectId } from "bson";
-
-export interface IComic {
-  _id?: string;
-  type: ItemType;
-  name: string;
-  desc: string;
-  chapters: IChapters[];
-}
+import { useState } from "react";
 
 export default function MultilineTextFields({
   comic: comic,

@@ -1,43 +1,11 @@
 "use client";
 
-import * as React from "react";
-import Masonry from "@mui/lab/Masonry";
-import { Box, Button, Tab, Tabs } from "@mui/material";
 import useSWRFetcher from "@/hooks/useSWRFetcher";
+import { Box, Tab, Tabs } from "@mui/material";
+import * as React from "react";
 import { useState } from "react";
-import { removeTrackItem, ItemType } from "@/services/item";
-import { useRouter } from "next/navigation";
-import { IAnime } from "../publish/components/AnimeForm";
-
-function ItemContent({ id, name, desc }) {
-  const router = useRouter();
-
-  return (
-    <div>
-      <div
-        onClick={() => {
-          const searchParams = new URLSearchParams();
-          searchParams.set("id", id);
-          router.push(`/item-detail?${searchParams}`);
-        }}
-      >
-        {name}
-      </div>
-      <div>{desc}</div>
-      <Button
-        onClick={async () => {
-          await removeTrackItem({
-            itemId: id,
-          });
-
-          window.location.reload();
-        }}
-      >
-        Remove
-      </Button>
-    </div>
-  );
-}
+import ItemGrid from "../components/ItemGrid";
+import { IAnime, ItemType } from "../types";
 
 function AllItems() {
   const { data, error, isLoading } =
@@ -58,16 +26,7 @@ function AllItems() {
         padding: 2,
       }}
     >
-      <Masonry columns={2} spacing={2}>
-        {_data.map((d) => (
-          <ItemContent
-            key={d._id}
-            id={d._id}
-            name={d.name}
-            desc={d.desc}
-          ></ItemContent>
-        ))}
-      </Masonry>
+      <ItemGrid itemList={_data}></ItemGrid>
     </Box>
   );
 }
@@ -96,16 +55,7 @@ function TarckItems() {
         padding: 2,
       }}
     >
-      <Masonry columns={2} spacing={2}>
-        {_data.map((d) => (
-          <ItemContent
-            key={d._id}
-            id={d._id}
-            name={d.name}
-            desc={d.desc}
-          ></ItemContent>
-        ))}
-      </Masonry>
+      <ItemGrid itemList={_data}></ItemGrid>
     </Box>
   );
 }
@@ -134,16 +84,7 @@ function ComicItems() {
         padding: 2,
       }}
     >
-      <Masonry columns={2} spacing={2}>
-        {_data.map((d) => (
-          <ItemContent
-            key={d._id}
-            id={d._id}
-            name={d.name}
-            desc={d.desc}
-          ></ItemContent>
-        ))}
-      </Masonry>
+      <ItemGrid itemList={_data}></ItemGrid>
     </Box>
   );
 }

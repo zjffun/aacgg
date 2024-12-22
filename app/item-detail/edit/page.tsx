@@ -4,8 +4,9 @@ import useSWRFetcher from "@/hooks/useSWRFetcher";
 import { updateItem } from "@/services/item";
 import { Box } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
-import AnimeForm, { IAnime } from "../../publish/components/AnimeForm";
+import AnimeForm from "../../publish/components/AnimeForm";
 import { Suspense } from "react";
+import { IAnime } from "@/app/types";
 
 function Content() {
   const router = useRouter();

@@ -3,23 +3,6 @@ import captureException from "@/utils/captureException";
 import poster from "./poster";
 import puter from "./puter";
 
-export interface IEpisode {
-  id: string;
-  name: string;
-  watched?: boolean;
-}
-
-export interface IChapters {
-  id: string;
-  name: string;
-  watched?: boolean;
-}
-
-export enum ItemType {
-  COMIC = "COMIC",
-  ANIME = "ANIME",
-}
-
 export async function createItem(data) {
   try {
     const result = await poster("/api/item", data);
@@ -44,9 +27,9 @@ export async function updateItem(data) {
   }
 }
 
-export async function markWathcedEpisodes(data) {
+export async function setProgressTo(data) {
   try {
-    const result = await puter("/api/mark-watched-episodes", data);
+    const result = await puter("/api/set-progress-to", data);
 
     return result;
   } catch (error) {
