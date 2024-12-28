@@ -1,11 +1,15 @@
 "use client";
 
+import { IAnime, ItemType } from "@/app/types";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
 import { ObjectId } from "bson";
-import { IAnime, ItemType } from "@/app/types";
+import { useState } from "react";
+import { Stack } from "@mui/material";
+import { IconButton } from "@mui/material";
+import { DeleteOutline } from "@mui/icons-material";
+import Grid from "@mui/material/Grid2";
 
 export default function MultilineTextFields({
   anime,
@@ -37,7 +41,7 @@ export default function MultilineTextFields({
     ]);
   }
 
-  function add10Episode() {
+  function add10Episodes() {
     const addEpisodes = Array.from({ length: 10 }, (_, i) => ({
       id: new ObjectId().toString(),
       name: String(episodes.length + 1 + i),
@@ -57,7 +61,7 @@ export default function MultilineTextFields({
       noValidate
       autoComplete="off"
     >
-      <div>
+      <Stack spacing={2}>
         <TextField
           value={name}
           onChange={(event) => setName(event.target.value)}
@@ -71,21 +75,50 @@ export default function MultilineTextFields({
           rows={4}
         />
 
-        <div>
-          <Button onClick={addEpisode}>Add Episode</Button>
-          <Button onClick={add10Episode}>Add 10 Episodes</Button>
-          <ul>
-            {episodes.map((c) => (
-              <li key={c.id}>
-                {c.name}
-                <Button onClick={() => removeEpisode(c.id)}>Remove</Button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Stack direction="row" spacing={2}>
+          <Button variant="contained" onClick={addEpisode}>
+            Add Episode
+          </Button>
+          <Button variant="outlined" onClick={add10Episodes}>
+            Add 10 Episodes
+          </Button>
+        </Stack>
 
-        <Button onClick={submit}>Submit</Button>
-      </div>
+        <Grid container spacing={1}>
+          {episodes.map((episode) => (
+            <Grid key={episode.id} size={2}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  backgroundColor: "#f5f5f5",
+                  borderRadius: 1,
+                  padding: "4px 8px",
+                }}
+              >
+                <Box
+                  sx={{
+                    flexGrow: 1,
+                  }}
+                >
+                  {episode.name}
+                </Box>
+                <IconButton
+                  color="error"
+                  size="small"
+                  onClick={() => removeEpisode(episode.id)}
+                >
+                  <DeleteOutline fontSize="small" />
+                </IconButton>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+
+        <Button variant="contained" onClick={submit}>
+          Submit
+        </Button>
+      </Stack>
     </Box>
   );
 }

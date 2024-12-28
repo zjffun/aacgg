@@ -1,7 +1,7 @@
 "use client";
 
 import useSWRFetcher from "@/hooks/useSWRFetcher";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography, AppBar, IconButton, Toolbar } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import getSubItems from "../common/getSubItems";
@@ -9,6 +9,7 @@ import FavoriteButton from "../components/FavoriteButton";
 import ProgressButton from "../components/ProgressButton";
 import useProgress from "../hooks/useProgress";
 import { IAnime, IEpisode, IProgress } from "../types";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 function EpisodeItem({
   progress,
@@ -45,46 +46,64 @@ function Content() {
   }
 
   return (
-    <Box sx={{ padding: 2 }}>
-      {data?.name && (
-        <Typography gutterBottom variant="subtitle1">
-          {data?.name}
-        </Typography>
-      )}
+    <>
+      <AppBar position="sticky" color="default">
+        <Toolbar>
+          <IconButton 
+            edge="start" 
+            color="inherit" 
+            onClick={() => router.back()}
+            sx={{ mr: 2 }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography variant="h6" component="div">
+            {data?.name || 'Details'}
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
-      {data?.desc && (
-        <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>
-          {data?.desc}
-        </Typography>
-      )}
+      <Box sx={{ padding: 2 }}>
+        {data?.name && (
+          <Typography gutterBottom variant="subtitle1">
+            {data?.name}
+          </Typography>
+        )}
 
-      <Stack direction="row" spacing={1}>
-        <FavoriteButton id={data?._id}></FavoriteButton>
-        <ProgressButton
-          itemId={data?._id}
-          progress={progress}
-          subItem={subItem}
-          updateProgress={updateProgress}
-        ></ProgressButton>
-      </Stack>
+        {data?.desc && (
+          <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>
+            {data?.desc}
+          </Typography>
+        )}
 
-      <Stack direction="row" sx={{ flexWrap: "wrap" }} spacing={0}>
-        {subItem.map((c) => (
-          <EpisodeItem key={c.id} {...c} progress={progress}></EpisodeItem>
-        ))}
-      </Stack>
+        <Stack direction="row" spacing={1}>
+          <FavoriteButton id={data?._id}></FavoriteButton>
+          <ProgressButton
+            itemId={data?._id}
+            progress={progress}
+            subItem={subItem}
+            updateProgress={updateProgress}
+          ></ProgressButton>
+        </Stack>
 
-      <Button
-        onClick={() => {
-          const searchParams = new URLSearchParams();
-          searchParams.set("id", id);
+        <Stack direction="row" sx={{ flexWrap: "wrap" }} spacing={0}>
+          {subItem.map((c) => (
+            <EpisodeItem key={c.id} {...c} progress={progress}></EpisodeItem>
+          ))}
+        </Stack>
 
-          router.push(`/item-detail/edit?${searchParams}`);
-        }}
-      >
-        Edit
-      </Button>
-    </Box>
+        <Button
+          onClick={() => {
+            const searchParams = new URLSearchParams();
+            searchParams.set("id", id);
+
+            router.push(`/item-detail/edit?${searchParams}`);
+          }}
+        >
+          Edit
+        </Button>
+      </Box>
+    </>
   );
 }
 

@@ -6,6 +6,10 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { ObjectId } from "bson";
 import { useState } from "react";
+import { Stack } from "@mui/material";
+import { IconButton } from "@mui/material";
+import { DeleteOutline } from "@mui/icons-material";
+import Grid from "@mui/material/Grid2";
 
 export default function MultilineTextFields({
   comic: comic,
@@ -57,7 +61,7 @@ export default function MultilineTextFields({
       noValidate
       autoComplete="off"
     >
-      <div>
+      <Stack spacing={2}>
         <TextField
           value={name}
           onChange={(event) => setName(event.target.value)}
@@ -71,21 +75,50 @@ export default function MultilineTextFields({
           rows={4}
         />
 
-        <div>
-          <Button onClick={addChapter}>Add Chapter</Button>
-          <Button onClick={add10Chapter}>Add 10 Chapters</Button>
-          <ul>
-            {chapters.map((c) => (
-              <li key={c.id}>
-                {c.name}
-                <Button onClick={() => removeChapter(c.id)}>Remove</Button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Stack direction="row" spacing={2}>
+          <Button variant="contained" onClick={addChapter}>
+            Add Chapter
+          </Button>
+          <Button variant="outlined" onClick={add10Chapter}>
+            Add 10 Chapters
+          </Button>
+        </Stack>
 
-        <Button onClick={submit}>Submit</Button>
-      </div>
+        <Grid container spacing={1}>
+          {chapters.map((c) => (
+            <Grid key={c.id} size={2}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  backgroundColor: "#f5f5f5",
+                  borderRadius: 1,
+                  padding: "4px 8px",
+                }}
+              >
+                <Box
+                  sx={{
+                    flexGrow: 1,
+                  }}
+                >
+                  {c.name}
+                </Box>
+                <IconButton
+                  color="error"
+                  size="small"
+                  onClick={() => removeChapter(c.id)}
+                >
+                  <DeleteOutline fontSize="small" />
+                </IconButton>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+
+        <Button variant="contained" onClick={submit}>
+          Submit
+        </Button>
+      </Stack>
     </Box>
   );
 }

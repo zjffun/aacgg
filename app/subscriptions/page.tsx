@@ -6,6 +6,7 @@ import useSWRFetcher from "@/hooks/useSWRFetcher";
 import { useState } from "react";
 import { IAnime, ItemType } from "../types";
 import ItemGrid from "../components/ItemGrid";
+import { PrivatePageGuard } from "@/components/PrivatePageGuard";
 
 function AllItems() {
   const { data, error, isLoading } = useSWRFetcher<IAnime[]>(`/api/all-items`);
@@ -89,21 +90,23 @@ export default function Page() {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
-          <Tab label="All" value="All" />
-          <Tab label="Anime" value="Anime" />
-          <Tab label="Comic" value="Comic" />
-        </Tabs>
+    <PrivatePageGuard>
+      <Box sx={{ width: "100%" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
+            <Tab label="All" value="All" />
+            <Tab label="Anime" value="Anime" />
+            <Tab label="Comic" value="Comic" />
+          </Tabs>
+        </Box>
+        {value === "All" && <AllItems></AllItems>}
+        {value === "Anime" && <TarckItems></TarckItems>}
+        {value === "Comic" && <ComicItems></ComicItems>}
       </Box>
-      {value === "All" && <AllItems></AllItems>}
-      {value === "Anime" && <TarckItems></TarckItems>}
-      {value === "Comic" && <ComicItems></ComicItems>}
-    </Box>
+    </PrivatePageGuard>
   );
 }

@@ -1,8 +1,9 @@
 import getApiOrigin from "@/utils/getApiOrigin";
 
-const poster = (path: string, data: any) => {
+const poster = async (path: string, data: any) => {
   const url = new URL(path, getApiOrigin());
-  const reuslt = fetch(url, {
+  
+  const response = await fetch(url, {
     mode: "cors",
     credentials: "include",
     method: "POST",
@@ -10,11 +11,13 @@ const poster = (path: string, data: any) => {
     headers: {
       "Content-Type": "application/json",
     },
-  }).then((res) => {
-    return res.json();
   });
 
-  return reuslt;
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return response.json();
 };
 
 export default poster;

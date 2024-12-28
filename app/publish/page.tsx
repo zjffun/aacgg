@@ -15,6 +15,7 @@ import { ContentType, ItemType } from "../types";
 import AnimeForm from "./components/AnimeForm";
 import ComicForm from "./components/ComicForm";
 import { createItem } from "@/services/item";
+import { PrivatePageGuard } from "@/components/PrivatePageGuard";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -62,82 +63,84 @@ export default function MultilineTextFields() {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Post" value="post" />
-          <Tab label="Anime" value={ItemType.ANIME} />
-          <Tab label="Comic" value={ItemType.COMIC} />
-        </Tabs>
-      </Box>
-      {value === "post" && (
-        <Box
-          component="form"
-          sx={{ "& .MuiTextField-root": { width: "100%" }, padding: 2 }}
-          noValidate
-          autoComplete="off"
-        >
-          <div>
-            <TextField
-              value={text}
-              onChange={(event) => setText(event.target.value)}
-              id="outlined-multiline-static"
-              label="Text"
-              multiline
-              rows={4}
-            />
-            <PostImageList images={images} />
-            <Button
-              component="label"
-              role={undefined}
-              variant="contained"
-              tabIndex={-1}
-              startIcon={<CloudUploadIcon />}
-            >
-              Upload files
-              <VisuallyHiddenInput
-                type="file"
-                onChange={async (event) => {
-                  if (!event.target.files?.length) return;
-                  const result = await uploadImages([...event.target.files]);
-
-                  setImages((imgs) => {
-                    return [...imgs, ...result];
-                  });
-                }}
-                multiple
-              />
-            </Button>
-            <Button onClick={submit}>提交</Button>
-          </div>
+    <PrivatePageGuard>
+      <Box sx={{ width: "100%" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
+            <Tab label="Post" value="post" />
+            <Tab label="Anime" value={ItemType.ANIME} />
+            <Tab label="Comic" value={ItemType.COMIC} />
+          </Tabs>
         </Box>
-      )}
-      {value === ItemType.ANIME && (
-        <AnimeForm
-          onSubmit={async (data) => {
-            const result = await createItem(data);
+        {value === "post" && (
+          <Box
+            component="form"
+            sx={{ "& .MuiTextField-root": { width: "100%" }, padding: 2 }}
+            noValidate
+            autoComplete="off"
+          >
+            <div>
+              <TextField
+                value={text}
+                onChange={(event) => setText(event.target.value)}
+                id="outlined-multiline-static"
+                label="Text"
+                multiline
+                rows={4}
+              />
+              <PostImageList images={images} />
+              <Button
+                component="label"
+                role={undefined}
+                variant="contained"
+                tabIndex={-1}
+                startIcon={<CloudUploadIcon />}
+              >
+                Upload files
+                <VisuallyHiddenInput
+                  type="file"
+                  onChange={async (event) => {
+                    if (!event.target.files?.length) return;
+                    const result = await uploadImages([...event.target.files]);
 
-            if (result) {
-              router.back();
-            }
-          }}
-        ></AnimeForm>
-      )}
-      {value === ItemType.COMIC && (
-        <ComicForm
-          onSubmit={async (data) => {
-            const result = await createItem(data);
+                    setImages((imgs) => {
+                      return [...imgs, ...result];
+                    });
+                  }}
+                  multiple
+                />
+              </Button>
+              <Button onClick={submit}>提交</Button>
+            </div>
+          </Box>
+        )}
+        {value === ItemType.ANIME && (
+          <AnimeForm
+            onSubmit={async (data) => {
+              const result = await createItem(data);
 
-            if (result) {
-              router.back();
-            }
-          }}
-        ></ComicForm>
-      )}
-    </Box>
+              if (result) {
+                router.back();
+              }
+            }}
+          ></AnimeForm>
+        )}
+        {value === ItemType.COMIC && (
+          <ComicForm
+            onSubmit={async (data) => {
+              const result = await createItem(data);
+
+              if (result) {
+                router.back();
+              }
+            }}
+          ></ComicForm>
+        )}
+      </Box>
+    </PrivatePageGuard>
   );
 }
