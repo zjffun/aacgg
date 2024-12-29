@@ -48,3 +48,11 @@ export interface IAnime extends IItem {
 export interface IComic extends IItem {
   chapters: IChapters[];
 }
+
+export interface ImageItem {
+  key: string;
+  img?: string;
+  file?: File;
+  uploading?: boolean;
+  error?: Error;
+}

@@ -17,7 +17,7 @@ export default function ItemCard({ item }: { item: IItem }) {
           <CardMedia
             component="img"
             height="140"
-            image={imageLoader({ src: item.thumbnail, size: 140 })}
+            image={imageLoader({ img: item.thumbnail, size: 140 })}
             alt={`${item.name} thumbnail`}
           />
         )}

@@ -22,7 +22,12 @@ function Contents(props: { contents: IPostContent[] }) {
         return <p key={null}>{item.content}</p>;
       })}
 
-      <PostImageList images={images.map((item) => item.content)} />
+      <PostImageList
+        images={images.map((item) => ({
+          key: item.content,
+          img: item.content,
+        }))}
+      />
     </div>
   );
 }
