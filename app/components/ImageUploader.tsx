@@ -108,3 +108,25 @@ export default function ImageUploader({
     </>
   );
 }
+
+export function SingleImageUploader({
+  image,
+  onChange,
+  showingDelete = false,
+}: {
+  image?: ImageItem;
+  onChange: (image: ImageItem | undefined) => void;
+  showingDelete?: boolean;
+}) {
+  const handleImageChange = (images: ImageItem[]) => {
+    onChange(images[0]);
+  };
+
+  return (
+    <ImageUploader
+      images={image ? [image] : []}
+      onChange={handleImageChange}
+      showingDelete={showingDelete}
+    />
+  );
+}

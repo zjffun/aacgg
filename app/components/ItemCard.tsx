@@ -13,12 +13,12 @@ export default function ItemCard({ item }: { item: IItem }) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
-        {item.thumbnail && (
+        {item.coverImage && (
           <CardMedia
             component="img"
             height="140"
-            image={imageLoader({ img: item.thumbnail, size: 140 })}
-            alt={`${item.name} thumbnail`}
+            image={imageLoader({ img: item.coverImage, size: 140 })}
+            alt={`${item.name} cover`}
           />
         )}
 

@@ -1,15 +1,16 @@
 "use client";
 
-import { IAnime, ItemType } from "@/app/types";
+import { IAnime, ImageItem, ItemType } from "@/app/types";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { ObjectId } from "bson";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Stack } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { DeleteOutline } from "@mui/icons-material";
 import Grid from "@mui/material/Grid2";
+import { SingleImageUploader } from "@/app/components/ImageUploader";
 
 export default function MultilineTextFields({
   anime,
@@ -21,6 +22,7 @@ export default function MultilineTextFields({
   const [name, setName] = useState(anime?.name || "");
   const [desc, setDesc] = useState(anime?.desc || "");
   const [episodes, setEpisodes] = useState(anime?.episodes || []);
+  const [coverImage, setCoverImage] = useState<ImageItem>();
 
   async function submit() {
     onSubmit?.({
@@ -28,6 +30,7 @@ export default function MultilineTextFields({
       name,
       desc,
       episodes,
+      coverImage: coverImage?.img,
     });
   }
 
@@ -54,6 +57,15 @@ export default function MultilineTextFields({
     setEpisodes(episodes.filter((d) => d.id !== id));
   }
 
+  useEffect(() => {
+    if (anime?.coverImage) {
+      setCoverImage({
+        key: anime.coverImage,
+        img: anime.coverImage,
+      });
+    }
+  }, [anime?.coverImage]);
+
   return (
     <Box
       component="form"
@@ -73,6 +85,12 @@ export default function MultilineTextFields({
           label="Description"
           multiline
           rows={4}
+        />
+
+        <SingleImageUploader
+          showingDelete={true}
+          image={coverImage}
+          onChange={(img) => setCoverImage(img)}
         />
 
         <Stack direction="row" spacing={2}>

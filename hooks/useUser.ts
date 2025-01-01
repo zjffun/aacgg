@@ -1,4 +1,4 @@
-import fetcher from "@/services/fetcher";
+import getApiOrigin from "@/utils/getApiOrigin";
 import useSWR from "swr";
 
 export interface User {
@@ -6,6 +6,19 @@ export interface User {
   email: string;
   avatarUrl: string;
 }
+
+const fetcher = async (path: string) => {
+  const url = new URL(path, getApiOrigin());
+
+  const response = await fetch(url, {
+    mode: "cors",
+    credentials: "include",
+  });
+
+  const result = await response.json();
+
+  return result;
+};
 
 function useUser() {
   const { data, error, isLoading } = useSWR(`/api/v1/current-user`, fetcher);

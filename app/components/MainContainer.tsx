@@ -4,6 +4,7 @@ import { Box, Container } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import MainNavigation from "./MainNavigation";
 import { ToastComp } from "./Toast";
+import { usePathname } from "next/navigation";
 
 const theme = createTheme({
   typography: {
@@ -25,15 +26,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+
+  const hideNavigationPathname = ["/recommend"];
+
+  const hideNavigation = hideNavigationPathname.includes(pathname);
+
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md" sx={{ padding: 0 }}>
-        <Box sx={{ pb: 7 }}>
+        <Box sx={{ pb: hideNavigation ? 0 : 7 }}>
           {children}
-          <MainNavigation></MainNavigation>
+          {!hideNavigation && <MainNavigation />}
         </Box>
       </Container>
-      <ToastComp></ToastComp>
+      <ToastComp />
     </ThemeProvider>
   );
 }

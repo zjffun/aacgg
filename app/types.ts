@@ -38,7 +38,7 @@ export interface IItem {
   type: ItemType;
   name: string;
   desc: string;
-  thumbnail?: string;
+  coverImage?: string;
 }
 
 export interface IAnime extends IItem {
