@@ -73,16 +73,20 @@ export default function AlignItemsList() {
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
-          <ListItemText primary="内容" />
+          <ListItemText primary="Content" />
         </ListItemButton>
       </ListItem>
 
       <ListItem disablePadding>
-        <ListItemButton>
+        <ListItemButton
+          onClick={() => {
+            router.push(`/recommend/edit`);
+          }}
+        >
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
-          <ListItemText primary="Inbox" />
+          <ListItemText primary="Recommend" />
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>

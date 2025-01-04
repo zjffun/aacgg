@@ -1,3 +1,5 @@
+import getImageUrl from "./getImageUrl";
+
 const imageLoader = ({
   img,
   size,
@@ -8,7 +10,9 @@ const imageLoader = ({
   file?: File;
 }) => {
   if (img) {
-    return `https://aacgg.com/cdn-cgi/image/width=${size},height=${size},fix=crop,format=auto,quality=75/https://r2.aacgg.com/${img}`;
+    return `https://aacgg.com/cdn-cgi/image/width=${size},height=${size},fix=crop,format=auto,quality=75/${getImageUrl(
+      img
+    )}`;
   }
 
   if (file) {

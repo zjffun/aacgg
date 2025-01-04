@@ -1,7 +1,16 @@
+"use client";
+
+import { Suspense } from "react";
 import { Box, Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import localFont from "next/font/local";
-// import PostCard from '../components/PostCard';
+import { useSearchParams } from "next/navigation";
+import useSWR from "swr";
+import fetcher from "@/services/fetcher";
+import { IItem } from "../types";
+import Image from "next/image";
+import getImageUrl from "../common/getImageUrl";
+
 import "./cyberpunk.css";
 import styles from "./page.module.css";
 
@@ -11,7 +20,20 @@ const cyberpunkFont = localFont({
   variable: "--font-cyberpunk",
 });
 
-export default function RecommendPage() {
+function Content() {
+  const param = useSearchParams();
+  const userLogin = param.get("name");
+
+  const { isLoading, error, data } = useSWR<{
+    items: IItem[];
+  }>(`/api/get-recommend/${userLogin}`, fetcher);
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (error) return <div>Error: {error.message}</div>;
+
+  const recommendList = data?.items || [];
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -41,17 +63,20 @@ export default function RecommendPage() {
       >
         <Container maxWidth="lg">
           <Grid container spacing={3}>
-            {[1, 2, 3, 4, 5, 6].map((item) => (
-              <Grid size={4} key={item}>
+            {recommendList.map((item) => (
+              <Grid size={4} key={item._id}>
                 <div className="cyber-tile-small fg-dark bg-cyan">
-                  <div
+                  <Image
+                    src={getImageUrl(item.coverImage)}
+                    width={30}
+                    height={40}
+                    loading="lazy"
+                    alt={item.name}
                     style={{
-                      width: 100,
-                      height: 100,
+                      width: "100%",
                     }}
-                  ></div>
-                  {/* <img src="image.jpg"> */}
-                  <label>Text content</label>
+                  />
+                  <label>{item.name}</label>
                 </div>
               </Grid>
             ))}
@@ -62,5 +87,13 @@ export default function RecommendPage() {
         <div className="cyber-razor-top"></div>
       </div>
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense>
+      <Content />
+    </Suspense>
   );
 }
