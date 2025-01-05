@@ -6,7 +6,7 @@ import fetcher from "@/services/fetcher";
 import { IItem } from "../../types";
 import Image from "next/image";
 import getImageUrl from "../../common/getImageUrl";
-import { Box, Button, Container, ToggleButton } from "@mui/material";
+import { Box, Button, Container, Paper, ToggleButton } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {
   DndContext,
@@ -41,8 +41,12 @@ function SortableItem({ item, onDelete, disabled }) {
 
   return (
     <Grid size={4} style={style} {...attributes} {...listeners}>
-      <div ref={setNodeRef} className="cyber-tile-small fg-dark bg-cyan">
-        {src && (
+      <div ref={setNodeRef}>
+        <Paper
+          sx={{
+            height: "100%",
+          }}
+        >
           <Image
             src={src}
             width={90}
@@ -50,20 +54,23 @@ function SortableItem({ item, onDelete, disabled }) {
             loading="lazy"
             alt={item.name}
             style={{
+              aspectRatio: "1 / 1.414",
               width: "100%",
             }}
           />
-        )}
-        <label>{item.name}</label>
-        {disabled && (
-          <Button
-            onClick={() => {
-              onDelete();
-            }}
-          >
-            Delete
-          </Button>
-        )}
+          <label>{item.name}</label>
+          <div>
+            {disabled && (
+              <Button
+                onClick={() => {
+                  onDelete();
+                }}
+              >
+                Delete
+              </Button>
+            )}
+          </div>
+        </Paper>
       </div>
     </Grid>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import localFont from "next/font/local";
 import { useSearchParams } from "next/navigation";
@@ -40,12 +40,11 @@ function Content() {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className="cyber-razor-bottom">
-          <Typography
-            variant="h4"
+          <h1
             className={cyberpunkFont.className}
-            sx={{
-              p: 2,
-              pb: 1,
+            style={{
+              fontSize: "2.25rem",
+              padding: "16px 16px 8px 16px",
               color: "var(--black)",
               textShadow:
                 "var(--cyan-cyberpunk-font1) 1px 1px, var(--cyan-cyberpunk-font2) 2px 2px",
@@ -53,15 +52,15 @@ function Content() {
             }}
           >
             recommend
-          </Typography>
+          </h1>
         </div>
       </div>
 
       <Box
         sx={{
           pt: 3,
-          pb: screenshot ? 0 : 7,
-          minHeight: "100vh",
+          pb: screenshot ? 3 : 7,
+          minHeight: "calc(100vh - 100px)",
         }}
       >
         <Container maxWidth="lg">
