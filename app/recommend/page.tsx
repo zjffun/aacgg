@@ -13,6 +13,7 @@ import getImageUrl from "../common/getImageUrl";
 
 import "./cyberpunk.css";
 import styles from "./page.module.css";
+import classNames from "classnames";
 
 // Initialize the local font
 const cyberpunkFont = localFont({
@@ -23,6 +24,7 @@ const cyberpunkFont = localFont({
 function Content() {
   const param = useSearchParams();
   const userLogin = param.get("name");
+  const screenshot = param.get("screenshot") === "true";
 
   const { isLoading, error, data } = useSWR<{
     items: IItem[];
@@ -58,6 +60,7 @@ function Content() {
       <Box
         sx={{
           pt: 3,
+          pb: screenshot ? 0 : 7,
           minHeight: "100vh",
         }}
       >
@@ -65,27 +68,32 @@ function Content() {
           <Grid container spacing={3}>
             {recommendList.map((item) => (
               <Grid size={4} key={item._id}>
-                <div className="cyber-tile-small fg-dark bg-cyan">
+                <div className={`${styles.item} cyber-tile-small fg-dark`}>
                   <Image
                     src={getImageUrl(item.coverImage)}
-                    width={30}
-                    height={40}
+                    width={90}
+                    height={127}
                     loading="lazy"
                     alt={item.name}
                     style={{
+                      aspectRatio: "1 / 1.414",
+                      objectFit: "cover",
                       width: "100%",
                     }}
                   />
-                  <label>{item.name}</label>
+                  <label className={styles.itemLabel}>{item.name}</label>
                 </div>
               </Grid>
             ))}
           </Grid>
         </Container>
       </Box>
-      <div className={styles.footer}>
-        <div className="cyber-razor-top"></div>
-      </div>
+      <div
+        className={classNames(
+          styles.footer,
+          screenshot && styles.footerScreenshot
+        )}
+      ></div>
     </div>
   );
 }

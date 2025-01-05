@@ -45,8 +45,8 @@ function SortableItem({ item, onDelete }) {
         {src && (
           <Image
             src={src}
-            width={30}
-            height={40}
+            width={90}
+            height={127}
             loading="lazy"
             alt={item.name}
             style={{
@@ -165,6 +165,17 @@ export default function RecommendPage() {
           }}
         >
           Preview
+        </Button>
+        <Button
+          onClick={() => {
+            const searchParams = new URLSearchParams({
+              name: user?.login,
+              screenshot: "true",
+            });
+            router.push(`/recommend?${searchParams}`);
+          }}
+        >
+          Screenshot
         </Button>
       </Box>
       <DndContext

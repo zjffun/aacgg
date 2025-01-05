@@ -1,6 +1,6 @@
 "use client";
 
-import { IComic, ItemType } from "@/app/types";
+import { IComic, ImageItem, ItemType } from "@/app/types";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -10,6 +10,7 @@ import { Stack } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { DeleteOutline } from "@mui/icons-material";
 import Grid from "@mui/material/Grid2";
+import { SingleImageUploader } from "@/app/components/ImageUploader";
 
 export default function MultilineTextFields({
   comic: comic,
@@ -21,6 +22,7 @@ export default function MultilineTextFields({
   const [name, setName] = useState(comic?.name || "");
   const [desc, setDesc] = useState(comic?.desc || "");
   const [chapters, setChapters] = useState(comic?.chapters || []);
+  const [coverImage, setCoverImage] = useState<ImageItem>();
 
   async function submit() {
     onSubmit?.({
@@ -28,6 +30,7 @@ export default function MultilineTextFields({
       name,
       desc,
       chapters,
+      coverImage: coverImage?.img,
     });
   }
 
@@ -73,6 +76,12 @@ export default function MultilineTextFields({
           label="Description"
           multiline
           rows={4}
+        />
+
+        <SingleImageUploader
+          showingDelete={true}
+          image={coverImage}
+          onChange={(img) => setCoverImage(img)}
         />
 
         <Stack direction="row" spacing={2}>
