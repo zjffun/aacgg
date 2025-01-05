@@ -86,7 +86,26 @@ function Content() {
             ))}
           </Grid>
         </Container>
+        <Box
+          sx={{
+            mt: 5,
+            mb: 2,
+            px: 2,
+          }}
+        >
+          <Image
+            src="/to-be-continued.jpg"
+            alt="me"
+            width="64"
+            height="64"
+            style={{
+              height: "40px",
+              width: "auto",
+            }}
+          ></Image>
+        </Box>
       </Box>
+
       <div
         className={classNames(
           styles.footer,
