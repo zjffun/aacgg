@@ -6,7 +6,7 @@ import fetcher from "@/services/fetcher";
 import { IItem } from "../../types";
 import Image from "next/image";
 import getImageUrl from "../../common/getImageUrl";
-import { Box, Button, Container } from "@mui/material";
+import { Box, Button, Container, ToggleButton } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {
   DndContext,
@@ -28,7 +28,7 @@ import { createRecommend, updateRecommend } from "@/services/recommend";
 import { useRouter } from "next/navigation";
 import useUser from "@/hooks/useUser";
 
-function SortableItem({ item, onDelete }) {
+function SortableItem({ item, onDelete, disabled }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id });
 
@@ -55,13 +55,15 @@ function SortableItem({ item, onDelete }) {
           />
         )}
         <label>{item.name}</label>
-        <Button
-          onClick={() => {
-            onDelete();
-          }}
-        >
-          Delete
-        </Button>
+        {disabled && (
+          <Button
+            onClick={() => {
+              onDelete();
+            }}
+          >
+            Delete
+          </Button>
+        )}
       </div>
     </Grid>
   );
@@ -79,6 +81,7 @@ export default function RecommendPage() {
   const { user, isError: isErrorUser, isLoading: isLoadingUser } = useUser();
 
   const [open, setOpen] = useState(false);
+  const [sortItem, setSortItem] = useState(false);
   const [items, setItems] = useState<IItemWithId[]>([]);
 
   useEffect(() => {
@@ -91,16 +94,16 @@ export default function RecommendPage() {
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
-      activationConstraint: {
-        delay: 200,
-        tolerance: 10,
-      },
+      // activationConstraint: {
+      //   delay: 200,
+      //   tolerance: 10,
+      // },
     }),
     useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 200,
-        tolerance: 10,
-      },
+      // activationConstraint: {
+      //   delay: 200,
+      //   tolerance: 10,
+      // },
     })
   );
 
@@ -178,15 +181,30 @@ export default function RecommendPage() {
           Screenshot
         </Button>
       </Box>
+      <Box>
+        <ToggleButton
+          color="primary"
+          value="sortItem"
+          selected={sortItem}
+          onChange={() => setSortItem((prevSelected) => !prevSelected)}
+        >
+          Drag Sort
+        </ToggleButton>
+      </Box>
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <SortableContext items={items} strategy={rectSortingStrategy}>
+        <SortableContext
+          disabled={!sortItem}
+          items={items}
+          strategy={rectSortingStrategy}
+        >
           <Grid container spacing={3}>
             {items.map((item) => (
               <SortableItem
+                disabled={!sortItem}
                 key={item.id}
                 item={item}
                 onDelete={() => {
