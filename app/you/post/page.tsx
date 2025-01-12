@@ -1,60 +1,18 @@
 "use client";
 
-import PostImageList from "@/app/components/PostImageList";
-import { ContentType, IPostContent } from "@/app/types";
+import PostList from "@/app/components/PostList";
+import { IPost } from "@/app/types";
 import fetcher from "@/services/fetcher";
 import useSWR from "swr";
 
-interface IPost {
-  _id: string;
-  contents: IPostContent[];
-}
-
-function Contents(props: { contents: IPostContent[] }) {
-  const text = props.contents.filter((item) => item.type === ContentType.TEXT);
-  const images = props.contents.filter(
-    (item) => item.type === ContentType.IMAGE
-  );
-
-  return (
-    <div>
-      {text.map((item) => {
-        return <p key={null}>{item.content}</p>;
-      })}
-
-      <PostImageList
-        images={images.map((item) => ({
-          key: item.content,
-          img: item.content,
-        }))}
-      />
-    </div>
-  );
-}
-
 export default function Page() {
-  const { data, error, isLoading } = useSWR<IPost[]>(
-    `/api/current-user-posts`,
-    fetcher
-  );
-
-  if (isLoading) {
-    return <div>loading...</div>;
-  }
-
-  if (error) {
-    return <div>failed to load</div>;
-  }
+  const {
+    data: newData,
+    error,
+    isLoading,
+  } = useSWR<IPost[]>(`/api/current-user-posts`, fetcher);
 
   return (
-    <div>
-      <ul>
-        {data?.map((item) => (
-          <li key={item._id}>
-            <Contents contents={item.contents}></Contents>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <PostList newData={newData} error={error} isLoading={isLoading}></PostList>
   );
 }

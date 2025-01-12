@@ -4,15 +4,21 @@ const imageLoader = ({
   img,
   size,
   file,
+  usingOriginalUrl,
 }: {
   img?: string;
-  size: number;
+  size?: number;
   file?: File;
+  usingOriginalUrl?: boolean;
 }) => {
   if (img) {
-    return `https://aacgg.com/cdn-cgi/image/width=${size},height=${size},fix=crop,format=auto,quality=75/${getImageUrl(
-      img
-    )}`;
+    const originalUrl = getImageUrl(img);
+
+    if (usingOriginalUrl) {
+      return originalUrl;
+    }
+
+    return `https://aacgg.com/cdn-cgi/image/width=${size},height=${size},fix=crop,format=auto,quality=75/${originalUrl}`;
   }
 
   if (file) {

@@ -15,6 +15,12 @@ export interface IPostContent {
   content: string;
 }
 
+export interface IPost {
+  _id: string;
+  createTime: string;
+  contents: IPostContent[];
+}
+
 export interface IPageInfo {
   page: number;
   pageSize: number;

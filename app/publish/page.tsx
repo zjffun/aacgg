@@ -3,7 +3,7 @@
 import ImageUploader from "@/app/components/ImageUploader";
 import { PrivatePageGuard } from "@/components/PrivatePageGuard";
 import { createItem } from "@/services/item";
-import { createPost } from "@/services/post";
+import { createPost, increaseHomePostsKey } from "@/services/post";
 import { Tab, Tabs } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -41,6 +41,7 @@ export default function MultilineTextFields() {
     });
 
     if (result) {
+      increaseHomePostsKey();
       router.back();
     }
   }

@@ -16,11 +16,12 @@ export default function useSWRFetcher<T>(
 ) {
   const key = getKey(path, params);
 
-  const { data, error, isLoading } = useSWR<T>(key, fetcher);
+  const { data, error, isLoading, mutate } = useSWR<T>(key, fetcher);
 
   return {
     data,
     isLoading,
     error,
+    mutate,
   };
 }
