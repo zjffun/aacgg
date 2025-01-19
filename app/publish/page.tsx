@@ -4,7 +4,7 @@ import ImageUploader from "@/app/components/ImageUploader";
 import { PrivatePageGuard } from "@/components/PrivatePageGuard";
 import { createItem } from "@/services/item";
 import { createPost, increaseHomePostsKey } from "@/services/post";
-import { Tab, Tabs } from "@mui/material";
+import { Stack, Tab, Tabs } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -71,7 +71,7 @@ export default function MultilineTextFields() {
             noValidate
             autoComplete="off"
           >
-            <div>
+            <Stack spacing={2}>
               <TextField
                 value={text}
                 onChange={(event) => setText(event.target.value)}
@@ -80,13 +80,19 @@ export default function MultilineTextFields() {
                 multiline
                 rows={4}
               />
-              <ImageUploader
-                images={images}
-                onChange={setImages}
-                showingDelete={true}
-              />
-              <Button onClick={submit}>提交</Button>
-            </div>
+              
+              <Box>
+                <ImageUploader
+                  images={images}
+                  onChange={setImages}
+                  showingDelete={true}
+                />
+              </Box>
+
+              <Button sx={{ w: "100%" }} variant="contained" onClick={submit}>
+                Post
+              </Button>
+            </Stack>
           </Box>
         )}
         {value === ItemType.ANIME && (

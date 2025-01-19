@@ -15,7 +15,7 @@ const cols = 3;
 export default function ImagePreviewList({ images }: { images }) {
   return (
     <PhotoProvider>
-      <ImageList cols={cols} rowHeight={size}>
+      <ImageList cols={cols}>
         {images.map((item) => (
           <PhotoView
             key={item.img}

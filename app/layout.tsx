@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import MainContainer from "./components/MainContainer";
 
@@ -18,6 +18,13 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "AACGG",
   description: "AACGG is an ACG Group",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
