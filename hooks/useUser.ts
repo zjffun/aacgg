@@ -2,10 +2,11 @@ import getApiOrigin from "@/utils/getApiOrigin";
 import useSWR from "swr";
 
 export interface User {
-  login: string,
+  login: string;
   name: string;
-  email: string;
-  avatarUrl: string;
+  email?: string;
+  avatarImg?: string;
+  bio?: string;
 }
 
 const fetcher = async (path: string) => {

@@ -14,6 +14,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/navigation";
+import getAvatarUrl from "../common/getAvatarUrl";
 
 export default function AlignItemsList() {
   const router = useRouter();
@@ -42,12 +43,17 @@ export default function AlignItemsList() {
 
   return (
     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-      <ListItem alignItems="flex-start">
+      <ListItem
+        alignItems="flex-start"
+        onClick={() => {
+          router.push("/profile");
+        }}
+      >
         <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+          <Avatar alt={user?.name} src={getAvatarUrl(user.avatarImg)} />
         </ListItemAvatar>
         <ListItemText
-          primary="Brunch this weekend?"
+          primary={user?.name}
           secondary={
             <>
               <Typography
@@ -55,9 +61,9 @@ export default function AlignItemsList() {
                 variant="body2"
                 sx={{ color: "text.primary", display: "inline" }}
               >
-                Ali Connors
+                @{user?.login}
               </Typography>
-              {" — I'll be in your neighborhood doing errands this…"}
+              {user?.bio}
             </>
           }
         />
