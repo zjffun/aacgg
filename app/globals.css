@@ -4,4 +4,6 @@
 
 html {
   font-size: 14px;
+
+  --navigation-height: 56px;
 }
