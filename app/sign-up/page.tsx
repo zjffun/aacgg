@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import * as React from "react";
@@ -17,6 +18,9 @@ import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import { GitHubIcon } from "../components/CustomIcons";
 import { useRouter } from "next/navigation";
+import openGithubSignIn from "@/utils/openGithubSignIn";
+import { showToast } from "../components/Toast";
+import { createUser } from "@/services/user";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -70,26 +74,27 @@ export default function SignUp() {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const validateInputs = () => {
-    const email = document.getElementById("email") as HTMLInputElement;
+    // const email = document.getElementById("email") as HTMLInputElement;
     const password = document.getElementById("password") as HTMLInputElement;
-    const name = document.getElementById("name") as HTMLInputElement;
+    const name = document.getElementById("login") as HTMLInputElement;
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage("");
-    }
+    // if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+    //   setEmailError(true);
+    //   setEmailErrorMessage("Please enter a valid email address.");
+    //   isValid = false;
+    // } else {
+    //   setEmailError(false);
+    //   setEmailErrorMessage("");
+    // }
 
-    if (!password.value || password.value.length < 6) {
+    if (!password.value || password.value.length < 8) {
       setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
+      setPasswordErrorMessage("Password must be at least 8 characters long.");
       isValid = false;
     } else {
       setPasswordError(false);
@@ -98,7 +103,7 @@ export default function SignUp() {
 
     if (!name.value || name.value.length < 1) {
       setNameError(true);
-      setNameErrorMessage("Name is required.");
+      setNameErrorMessage("Login name is required.");
       isValid = false;
     } else {
       setNameError(false);
@@ -108,15 +113,34 @@ export default function SignUp() {
     return isValid;
   };
 
+  const handleSave = async (userInfo) => {
+    try {
+      setLoading(true);
+      const result = await createUser(userInfo);
+
+      if (result) {
+        showToast("Create user success");
+      }
+
+      router.push("/you");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (nameError || emailError || passwordError) {
-      event.preventDefault();
       return;
     }
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get("name"),
-      lastName: data.get("lastName"),
+
+    handleSave({
+      login: data.get("login"),
       email: data.get("email"),
       password: data.get("password"),
     });
@@ -140,16 +164,16 @@ export default function SignUp() {
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
             <FormControl>
-              <FormLabel required htmlFor="name">
+              <FormLabel required htmlFor="login">
                 Login name
               </FormLabel>
               <TextField
-                autoComplete="name"
-                name="name"
+                autoComplete="login"
+                name="login"
                 required
                 fullWidth
-                id="name"
-                placeholder="Jon Snow"
+                id="login"
+                placeholder="Please enter name to login"
                 error={nameError}
                 helperText={nameErrorMessage}
                 color={nameError ? "error" : "primary"}
@@ -163,7 +187,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 name="password"
-                placeholder="••••••"
+                placeholder="••••••••"
                 type="password"
                 id="password"
                 autoComplete="new-password"
@@ -176,7 +200,6 @@ export default function SignUp() {
             <FormControl>
               <FormLabel htmlFor="email">Email</FormLabel>
               <TextField
-                required
                 fullWidth
                 id="email"
                 placeholder="your@email.com"
@@ -208,7 +231,9 @@ export default function SignUp() {
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => alert("Sign in with Google")}
+              onClick={() => {
+                openGithubSignIn();
+              }}
               startIcon={<GitHubIcon />}
             >
               Sign up with GitHub

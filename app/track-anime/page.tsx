@@ -6,6 +6,7 @@ import * as React from "react";
 import { useState } from "react";
 import ItemGrid from "../components/ItemGrid";
 import { IAnime, ItemType } from "../types";
+import { PrivatePageGuard } from "@/components/PrivatePageGuard";
 
 function AllItems() {
   const { data, error, isLoading } =
@@ -96,21 +97,23 @@ export default function Page() {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
-          <Tab label="All" value="All" />
-          <Tab label="Anime" value={ItemType.ANIME} />
-          <Tab label="Comic" value={ItemType.COMIC} />
-        </Tabs>
+    <PrivatePageGuard>
+      <Box sx={{ width: "100%" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
+            <Tab label="All" value="All" />
+            <Tab label="Anime" value={ItemType.ANIME} />
+            <Tab label="Comic" value={ItemType.COMIC} />
+          </Tabs>
+        </Box>
+        {value === "All" && <AllItems></AllItems>}
+        {value === ItemType.ANIME && <TarckItems></TarckItems>}
+        {value === ItemType.COMIC && <ComicItems></ComicItems>}
       </Box>
-      {value === "All" && <AllItems></AllItems>}
-      {value === ItemType.ANIME && <TarckItems></TarckItems>}
-      {value === ItemType.COMIC && <ComicItems></ComicItems>}
-    </Box>
+    </PrivatePageGuard>
   );
 }

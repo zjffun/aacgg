@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import * as React from "react";
@@ -18,6 +19,9 @@ import { styled } from "@mui/material/styles";
 import ForgotPassword from "./components/ForgotPassword";
 import { GitHubIcon } from "../components/CustomIcons";
 import { useRouter } from "next/navigation";
+import openGithubSignIn from "@/utils/openGithubSignIn";
+import { showToast } from "../components/Toast";
+import { passwordLogin } from "@/services/user";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -39,7 +43,8 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
-  height: "calc((1 - var(--template-frame-height, 0)) * 100dvh - var(--navigation-height))",
+  height:
+    "calc((1 - var(--template-frame-height, 0)) * 100dvh - var(--navigation-height))",
   minHeight: "100%",
   padding: theme.spacing(2),
   [theme.breakpoints.up("sm")]: {
@@ -69,6 +74,7 @@ export default function SignIn() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   // const handleClickOpen = () => {
   //   setOpen(true);
@@ -78,36 +84,56 @@ export default function SignIn() {
     setOpen(false);
   };
 
+  const handleLogin = async (userInfo) => {
+    try {
+      setLoading(true);
+      const result = await passwordLogin(userInfo);
+
+      if (result) {
+        showToast("Login success");
+      }
+
+      router.push("/you");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (emailError || passwordError) {
-      event.preventDefault();
       return;
     }
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
+
+    handleLogin({
+      loginOrEmail: data.get("email"),
       password: data.get("password"),
     });
   };
 
   const validateInputs = () => {
-    const email = document.getElementById("email") as HTMLInputElement;
+    // const email = document.getElementById("email") as HTMLInputElement;
     const password = document.getElementById("password") as HTMLInputElement;
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage("");
-    }
+    // if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+    //   setEmailError(true);
+    //   setEmailErrorMessage("Please enter a valid email address.");
+    //   isValid = false;
+    // } else {
+    //   setEmailError(false);
+    //   setEmailErrorMessage("");
+    // }
 
-    if (!password.value || password.value.length < 6) {
+    if (!password.value || password.value.length < 8) {
       setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
+      setPasswordErrorMessage("Password must be at least 8 characters long.");
       isValid = false;
     } else {
       setPasswordError(false);
@@ -202,7 +228,9 @@ export default function SignIn() {
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => alert("Sign in with Google")}
+              onClick={() => {
+                openGithubSignIn();
+              }}
               startIcon={<GitHubIcon />}
             >
               Sign in with GitHub
