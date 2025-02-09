@@ -3,6 +3,7 @@
 import getAvatarUrl from "@/app/common/getAvatarUrl";
 import GoBackAppBar from "@/app/components/GoBackAppBar";
 import { showToast } from "@/app/components/Toast";
+import { PrivatePageGuard } from "@/components/PrivatePageGuard";
 import useUser from "@/hooks/useUser";
 import { updateUserInfo } from "@/services/user";
 import { Camera } from "@mui/icons-material";
@@ -62,7 +63,7 @@ export default function EditProfile() {
   };
 
   return (
-    <div>
+    <PrivatePageGuard>
       <GoBackAppBar title="Edit Profile"></GoBackAppBar>
       <Box sx={{ padding: 2 }}>
         <Box
@@ -138,6 +139,6 @@ export default function EditProfile() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-    </div>
+    </PrivatePageGuard>
   );
 }

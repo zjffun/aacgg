@@ -38,3 +38,15 @@ export async function passwordLogin(data) {
     return false;
   }
 }
+
+export async function signOut() {
+  try {
+    const result = await poster("/api/user/sign-out", {});
+
+    return result;
+  } catch (error) {
+    captureException(error);
+    showToast("Sign out failed");
+    return false;
+  }
+}

@@ -2,17 +2,13 @@
 
 import useUser from "@/hooks/useUser";
 import { Edit } from "@mui/icons-material";
-import {
-  Avatar,
-  Box,
-  Container,
-  Fab,
-  Typography
-} from "@mui/material";
+import { Avatar, Box, Button, Container, Fab, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
 import getAvatarUrl from "../common/getAvatarUrl";
 import GoBackAppBar from "../components/GoBackAppBar";
+import { signOut } from "@/services/user";
+import { PrivatePageGuard } from "@/components/PrivatePageGuard";
 
 const UserProfile = () => {
   const router = useRouter();
@@ -27,7 +23,7 @@ const UserProfile = () => {
   }
 
   return (
-    <div>
+    <PrivatePageGuard>
       <GoBackAppBar title="Edit Profile"></GoBackAppBar>
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Grid container spacing={4}>
@@ -55,6 +51,21 @@ const UserProfile = () => {
             </Box>
           </Grid>
         </Grid>
+        <Box mt={4}>
+          <Button
+            variant="contained"
+            color="secondary"
+            sx={{
+              width: "100%",
+            }}
+            onClick={async () => {
+              await signOut();
+              router.push("/sign-in");
+            }}
+          >
+            Sign out
+          </Button>
+        </Box>
 
         {/* Action Buttons */}
         <Box
@@ -72,7 +83,7 @@ const UserProfile = () => {
           </Fab>
         </Box>
       </Container>
-    </div>
+    </PrivatePageGuard>
   );
 };
 
