@@ -36,49 +36,51 @@ export default function PostImageList({
 
   return (
     <>
-      <ImageList cols={cols} rowHeight={size}>
-        {images.map((item) => (
-          <ImageListItem key={item.key} sx={{ position: "relative" }}>
-            <Image
-              src={imageLoader({ ...item, size })}
-              width={100}
-              height={100}
-              loading="lazy"
-              alt=""
-              style={{ opacity: item.uploading ? 0.5 : 1 }}
-            />
-            {item.uploading && (
-              <CircularProgress
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  color: "primary.main",
-                }}
-                size={40}
+      {Boolean(images?.length) && (
+        <ImageList cols={cols} rowHeight={size}>
+          {images.map((item) => (
+            <ImageListItem key={item.key} sx={{ position: "relative" }}>
+              <Image
+                src={imageLoader({ ...item, size })}
+                width={100}
+                height={100}
+                loading="lazy"
+                alt=""
+                style={{ opacity: item.uploading ? 0.5 : 1 }}
               />
-            )}
-            {showingDelete && (
-              <IconButton
-                sx={{
-                  position: "absolute",
-                  top: 4,
-                  right: 4,
-                  bgcolor: "rgba(0, 0, 0, 0.5)",
-                  "&:hover": {
-                    bgcolor: "rgba(0, 0, 0, 0.7)",
-                  },
-                }}
-                size="small"
-                onClick={() => setDeleteTarget(item)}
-              >
-                <DeleteIcon sx={{ color: "white" }} fontSize="small" />
-              </IconButton>
-            )}
-          </ImageListItem>
-        ))}
-      </ImageList>
+              {item.uploading && (
+                <CircularProgress
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    color: "primary.main",
+                  }}
+                  size={40}
+                />
+              )}
+              {showingDelete && (
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    top: 4,
+                    right: 4,
+                    bgcolor: "rgba(0, 0, 0, 0.5)",
+                    "&:hover": {
+                      bgcolor: "rgba(0, 0, 0, 0.7)",
+                    },
+                  }}
+                  size="small"
+                  onClick={() => setDeleteTarget(item)}
+                >
+                  <DeleteIcon sx={{ color: "white" }} fontSize="small" />
+                </IconButton>
+              )}
+            </ImageListItem>
+          ))}
+        </ImageList>
+      )}
 
       <Dialog
         open={deleteTarget !== null}

@@ -1,5 +1,6 @@
 "use client";
 
+import GoBackAppBar from "@/app/components/GoBackAppBar";
 import PostList from "@/app/components/PostList";
 import { IPost } from "@/app/types";
 import fetcher from "@/services/fetcher";
@@ -13,6 +14,13 @@ export default function Page() {
   } = useSWR<IPost[]>(`/api/current-user-posts`, fetcher);
 
   return (
-    <PostList newData={newData} error={error} isLoading={isLoading}></PostList>
+    <>
+      <GoBackAppBar title="Your Content"></GoBackAppBar>
+      <PostList
+        newData={newData}
+        error={error}
+        isLoading={isLoading}
+      ></PostList>
+    </>
   );
 }

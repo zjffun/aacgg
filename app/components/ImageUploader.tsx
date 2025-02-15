@@ -1,4 +1,4 @@
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import uploadImages from "@/services/uploadImages";
@@ -97,12 +97,16 @@ export default function ImageUploader({
         showingDelete={showingDelete}
       />
       <Button
+        sx={{
+          aspectRatio: "1 / 1",
+          width: "5rem",
+        }}
         component="label"
         role={undefined}
-        variant="contained"
+        variant="outlined"
         tabIndex={-1}
-        startIcon={<CloudUploadIcon />}
       >
+        <AddPhotoAlternateIcon />
         <VisuallyHiddenInput type="file" onChange={handleFileChange} multiple />
       </Button>
     </>

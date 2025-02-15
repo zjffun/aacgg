@@ -1,8 +1,9 @@
 "use client";
 
 import useUser from "@/hooks/useUser";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import InboxIcon from "@mui/icons-material/Inbox";
+// import DraftsIcon from "@mui/icons-material/Drafts";
+import RecommendIcon from "@mui/icons-material/Recommend";
+import ArticleIcon from "@mui/icons-material/Article";
 import { ListItemButton, ListItemIcon } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { PrivatePageGuard } from "@/components/PrivatePageGuard";
@@ -57,7 +58,7 @@ export default function AlignItemsList() {
             }}
           >
             <ListItemIcon>
-              <InboxIcon />
+              <ArticleIcon />
             </ListItemIcon>
             <ListItemText primary="Content" />
           </ListItemButton>
@@ -70,12 +71,12 @@ export default function AlignItemsList() {
             }}
           >
             <ListItemIcon>
-              <InboxIcon />
+              <RecommendIcon />
             </ListItemIcon>
             <ListItemText primary="Recommend" />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        {/* <ListItem disablePadding>
           <ListItemButton>
             <ListItemIcon>
               <DraftsIcon />
@@ -93,7 +94,7 @@ export default function AlignItemsList() {
           <ListItemButton component="a" href="#simple-list">
             <ListItemText primary="Spam" />
           </ListItemButton>
-        </ListItem>
+        </ListItem> */}
       </List>
     </PrivatePageGuard>
   );
