@@ -1,10 +1,12 @@
 "use client";
 
-import { Box, CardContent } from "@mui/material";
+import { Avatar, Box, CardContent, CardHeader, Tooltip } from "@mui/material";
 import Card from "@mui/material/Card";
 import { useCallback, useEffect, useRef, useState } from "react";
 import PostContents from "../components/PostContents";
 import { IPost } from "../types";
+import getAvatarUrl from "../common/getAvatarUrl";
+import { formatDistanceToNow, format } from "date-fns";
 
 export default function PostList({
   newData,
@@ -73,6 +75,9 @@ export default function PostList({
     >
       <ul>
         {data?.map((item, index) => {
+          const date = new Date(item?.updateTime);
+          const timeAgo = formatDistanceToNow(date, { addSuffix: true });
+
           return (
             <li
               key={item?._id}
@@ -83,6 +88,27 @@ export default function PostList({
                   mb: 2,
                 }}
               >
+                <CardHeader
+                  avatar={
+                    <Avatar
+                      alt={item?.creator?.name}
+                      src={getAvatarUrl(item?.creator?.avatarImg)}
+                    />
+                  }
+                  // action={
+                  //   <IconButton aria-label="settings">
+                  //     <MoreVertIcon />
+                  //   </IconButton>
+                  // }
+                  title={item?.creator?.name}
+                  subheader={
+                    <div>
+                      <Tooltip title={format(date, "yyyy-MM-dd HH:mm:ssXXX")}>
+                        <span>{timeAgo}</span>
+                      </Tooltip>
+                    </div>
+                  }
+                />
                 <CardContent>
                   <PostContents contents={item.contents}></PostContents>
                 </CardContent>

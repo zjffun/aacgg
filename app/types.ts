@@ -10,6 +10,11 @@ export enum ItemType {
   ANIME = "ANIME",
 }
 
+export interface IUser {
+  name: string;
+  avatarImg: string;
+}
+
 export interface IPostContent {
   type: ContentType;
   content: string;
@@ -18,6 +23,8 @@ export interface IPostContent {
 export interface IPost {
   _id: string;
   createTime: string;
+  updateTime: string;
+  creator: IUser;
   contents: IPostContent[];
 }
 
