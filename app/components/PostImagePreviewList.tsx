@@ -10,9 +10,11 @@ import ImageListItem from "@mui/material/ImageListItem";
 import "react-photo-view/dist/react-photo-view.css";
 
 const size = 164;
-const cols = 3;
+const maxCols = 3;
 
 export default function ImagePreviewList({ images }: { images }) {
+  const cols = Math.min(Math.max(images.length, 1), maxCols);
+
   return (
     <PhotoProvider>
       <ImageList cols={cols}>
@@ -21,7 +23,7 @@ export default function ImagePreviewList({ images }: { images }) {
             key={item.img}
             src={imageLoader({ ...item, usingOriginalUrl: true })}
           >
-            <ImageListItem sx={{ position: "relative" }}>
+            <ImageListItem sx={{ maxHeight: "24rem", overflow: "hidden" }}>
               <Image
                 src={imageLoader({ ...item, size })}
                 width={164}

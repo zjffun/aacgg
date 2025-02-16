@@ -13,18 +13,21 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 
 const size = 164;
-const cols = 3;
 
 export default function PostImageList({
   images,
+  cols = 3,
   showingDelete = false,
   onChange,
+  lastElement,
 }: {
   images: ImageItem[];
+  cols?: number;
   showingDelete?: boolean;
+  lastElement?: ReactElement;
   onChange?: (images: ImageItem[]) => void;
 }) {
   const [deleteTarget, setDeleteTarget] = useState<ImageItem | null>(null);
@@ -36,51 +39,58 @@ export default function PostImageList({
 
   return (
     <>
-      {Boolean(images?.length) && (
-        <ImageList cols={cols} rowHeight={size}>
-          {images.map((item) => (
-            <ImageListItem key={item.key} sx={{ position: "relative" }}>
-              <Image
-                src={imageLoader({ ...item, size })}
-                width={100}
-                height={100}
-                loading="lazy"
-                alt=""
-                style={{ opacity: item.uploading ? 0.5 : 1 }}
+      <ImageList cols={cols}>
+        {images.map((item) => (
+          <ImageListItem
+            key={item.key}
+            sx={{
+              aspectRatio: "1 / 1",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            <Image
+              src={imageLoader({ ...item, size })}
+              width={100}
+              height={100}
+              loading="lazy"
+              alt=""
+              style={{ opacity: item.uploading ? 0.5 : 1 }}
+            />
+            {item.uploading && (
+              <CircularProgress
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  color: "primary.main",
+                }}
+                size={40}
               />
-              {item.uploading && (
-                <CircularProgress
-                  sx={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    color: "primary.main",
-                  }}
-                  size={40}
-                />
-              )}
-              {showingDelete && (
-                <IconButton
-                  sx={{
-                    position: "absolute",
-                    top: 4,
-                    right: 4,
-                    bgcolor: "rgba(0, 0, 0, 0.5)",
-                    "&:hover": {
-                      bgcolor: "rgba(0, 0, 0, 0.7)",
-                    },
-                  }}
-                  size="small"
-                  onClick={() => setDeleteTarget(item)}
-                >
-                  <DeleteIcon sx={{ color: "white" }} fontSize="small" />
-                </IconButton>
-              )}
-            </ImageListItem>
-          ))}
-        </ImageList>
-      )}
+            )}
+            {showingDelete && (
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  top: 4,
+                  right: 4,
+                  bgcolor: "rgba(0, 0, 0, 0.5)",
+                  "&:hover": {
+                    bgcolor: "rgba(0, 0, 0, 0.7)",
+                  },
+                }}
+                size="small"
+                onClick={() => setDeleteTarget(item)}
+              >
+                <DeleteIcon sx={{ color: "white" }} fontSize="small" />
+              </IconButton>
+            )}
+          </ImageListItem>
+        ))}
+
+        {lastElement && <ImageListItem>{lastElement}</ImageListItem>}
+      </ImageList>
 
       <Dialog
         open={deleteTarget !== null}

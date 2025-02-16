@@ -95,20 +95,26 @@ export default function ImageUploader({
           onChange(newImages);
         }}
         showingDelete={showingDelete}
+        lastElement={
+          <Button
+            sx={{
+              aspectRatio: "1 / 1",
+              width: "100%",
+            }}
+            component="label"
+            role={undefined}
+            variant="outlined"
+            tabIndex={-1}
+          >
+            <AddPhotoAlternateIcon />
+            <VisuallyHiddenInput
+              type="file"
+              onChange={handleFileChange}
+              multiple
+            />
+          </Button>
+        }
       />
-      <Button
-        sx={{
-          aspectRatio: "1 / 1",
-          width: "5rem",
-        }}
-        component="label"
-        role={undefined}
-        variant="outlined"
-        tabIndex={-1}
-      >
-        <AddPhotoAlternateIcon />
-        <VisuallyHiddenInput type="file" onChange={handleFileChange} multiple />
-      </Button>
     </>
   );
 }
