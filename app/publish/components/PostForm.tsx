@@ -1,14 +1,14 @@
 "use client";
 
 import ImageUploader from "@/app/components/ImageUploader";
-import { createPost, increaseHomePostsKey } from "@/services/post";
+import { createPost, increaseHomePostsKey, updatePost } from "@/services/post";
 import { Stack, styled } from "@mui/material";
 import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ContentType, ImageItem } from "../../types";
+import { ContentType, ImageItem, IPost } from "../../types";
 
 const blue = {
   100: "#DAECFF",
@@ -67,9 +67,33 @@ const TextareaAutosize = styled(BaseTextareaAutosize)(
   `
 );
 
-export default function MultilineTextFields() {
-  const [text, setText] = useState("");
-  const [images, setImages] = useState<ImageItem[]>([]);
+function getInitData(data?: IPost) {
+  let text = "";
+  const images: ImageItem[] = [];
+  if (data) {
+    for (const content of data.contents) {
+      if (content.type === ContentType.TEXT) {
+        text += content.content;
+      } else if (content.type === ContentType.IMAGE) {
+        images.push({
+          key: content.content,
+          img: content.content,
+        });
+      }
+    }
+  }
+  return {
+    id: data?._id,
+    text,
+    images,
+  };
+}
+
+export default function PostForm({ data }: { data?: IPost }) {
+  const initData = getInitData(data);
+
+  const [text, setText] = useState(initData.text);
+  const [images, setImages] = useState<ImageItem[]>(initData.images);
   const router = useRouter();
 
   async function submit() {
@@ -88,9 +112,18 @@ export default function MultilineTextFields() {
         }),
     ];
 
-    const result = await createPost({
-      contents,
-    });
+    let result;
+
+    if (initData.id) {
+      result = await updatePost({
+        id: initData.id,
+        contents,
+      });
+    } else {
+      result = await createPost({
+        contents,
+      });
+    }
 
     if (result) {
       increaseHomePostsKey();

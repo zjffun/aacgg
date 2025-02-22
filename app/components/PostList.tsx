@@ -1,12 +1,45 @@
 "use client";
 
-import { Avatar, Box, CardContent, CardHeader, Tooltip } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import {
+  Avatar,
+  Box,
+  CardContent,
+  CardHeader,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 import Card from "@mui/material/Card";
+import { format, formatDistanceToNow } from "date-fns";
 import { useCallback, useEffect, useRef, useState } from "react";
+import getAvatarUrl from "../common/getAvatarUrl";
 import PostContents from "../components/PostContents";
 import { IPost } from "../types";
-import getAvatarUrl from "../common/getAvatarUrl";
-import { formatDistanceToNow, format } from "date-fns";
+import ActionsDrawer from "./ActionsDrawer";
+
+function getTimeAgo(date?: Date) {
+  try {
+    if (!date) {
+      return "";
+    }
+    return formatDistanceToNow(date, { addSuffix: true });
+  } catch (error) {
+    console.error(error);
+    return "";
+  }
+}
+
+function getFormatedTime(date?: Date) {
+  try {
+    if (!date) {
+      return "";
+    }
+    return format(date, "yyyy-MM-dd HH:mm:ssXXX");
+  } catch (error) {
+    console.error(error);
+    return "";
+  }
+}
 
 export default function PostList({
   newData,
@@ -21,6 +54,9 @@ export default function PostList({
 }) {
   const [data, setData] = useState<IPost[]>([]);
   const [end, setEnd] = useState(false);
+  const [showingDrawer, setShowingDrawer] = useState(false);
+  const [currentData, setCurrentData] = useState<IPost | null>(null);
+
   const observer = useRef<IntersectionObserver>();
 
   useEffect(() => {
@@ -75,8 +111,8 @@ export default function PostList({
     >
       <ul>
         {data?.map((item, index) => {
-          const date = new Date(item?.updateTime);
-          const timeAgo = formatDistanceToNow(date, { addSuffix: true });
+          const date = item?.updateTime ? new Date(item.updateTime) : undefined;
+          const timeAgo = getTimeAgo(date);
 
           return (
             <li
@@ -95,15 +131,21 @@ export default function PostList({
                       src={getAvatarUrl(item?.creator?.avatarImg)}
                     />
                   }
-                  // action={
-                  //   <IconButton aria-label="settings">
-                  //     <MoreVertIcon />
-                  //   </IconButton>
-                  // }
+                  action={
+                    <IconButton
+                      aria-label="settings"
+                      onClick={() => {
+                        setCurrentData(item);
+                        setShowingDrawer(true);
+                      }}
+                    >
+                      <MoreVertIcon />
+                    </IconButton>
+                  }
                   title={item?.creator?.name}
                   subheader={
                     <div>
-                      <Tooltip title={format(date, "yyyy-MM-dd HH:mm:ssXXX")}>
+                      <Tooltip title={getFormatedTime(date)}>
                         <span>{timeAgo}</span>
                       </Tooltip>
                     </div>
@@ -120,6 +162,15 @@ export default function PostList({
       {isLoading && <div>loading...</div>}
       {error && <div>failed to load</div>}
       {end && <div>no more data</div>}
+
+      <ActionsDrawer
+        open={showingDrawer}
+        data={currentData}
+        onClose={() => {
+          setCurrentData(null);
+          setShowingDrawer(false);
+        }}
+      ></ActionsDrawer>
     </Box>
   );
 }

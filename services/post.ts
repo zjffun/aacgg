@@ -1,6 +1,7 @@
 import { showToast } from "@/app/components/Toast";
 import captureException from "@/utils/captureException";
 import poster from "./poster";
+import puter from "./puter";
 
 let homePostsKey = 0;
 
@@ -19,7 +20,19 @@ export async function createPost(data) {
     return result;
   } catch (error) {
     captureException(error);
-    showToast("发布失败");
+    showToast("Publish Error");
+    return false;
+  }
+}
+
+export async function updatePost(data) {
+  try {
+    const result = await puter("/api/post", data);
+
+    return result;
+  } catch (error) {
+    captureException(error);
+    showToast("Edit Error");
     return false;
   }
 }
