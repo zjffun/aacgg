@@ -3,7 +3,9 @@ import fetcher from "./fetcher";
 export default async function uploadImages(files: File[]): Promise<string[]> {
   const results: string[] = [];
   for (const file of files) {
-    const { url, key } = await fetcher("/api/common/upload-presigned-url");
+    const { url, key } = await fetcher<{ url: string; key: string }>(
+      "/api/common/upload-presigned-url"
+    );
 
     if (!url) {
       console.error("get url failed");

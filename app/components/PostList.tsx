@@ -167,8 +167,17 @@ export default function PostList({
         open={showingDrawer}
         data={currentData}
         onClose={() => {
-          setCurrentData(null);
           setShowingDrawer(false);
+          setCurrentData(null);
+        }}
+        onDelete={() => {
+          const newData = data.filter((d) => {
+            return d._id !== currentData?._id;
+          });
+
+          setData(newData);
+          setShowingDrawer(false);
+          setCurrentData(null);
         }}
       ></ActionsDrawer>
     </Box>

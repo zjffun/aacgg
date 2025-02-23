@@ -1,7 +1,6 @@
 import { showToast } from "@/app/components/Toast";
 import captureException from "@/utils/captureException";
-import poster from "./poster";
-import puter from "./puter";
+import { poster, puter } from "./baseFetch";
 
 export async function createRecommend(data) {
   try {

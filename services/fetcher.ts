@@ -1,18 +1,12 @@
-import getApiOrigin from "../utils/getApiOrigin";
+import { getFetchJson } from "./baseFetch";
 
-const fetcher = async (path: string) => {
-  const url = new URL(path, getApiOrigin());
-
-  const response = await fetch(url, {
-    mode: "cors",
-    credentials: "include",
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const fetcher = async <Res>(path: string) => {
+  const fetchJson = getFetchJson({
+    method: "GET",
   });
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  const result = await response.json();
+  const result = await fetchJson<never, Res>(path);
 
   return result;
 };

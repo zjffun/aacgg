@@ -19,20 +19,33 @@ import {
 import { useRouter } from "next/navigation";
 import { IPost } from "../types";
 import { useState } from "react";
+import { deletePost } from "@/services/post";
+import { showToast } from "./Toast";
 
-export default function PostList({
+export default function ActionsDrawer({
   open,
   data,
   onClose,
+  onDelete,
 }: {
   open?: boolean;
   data?: IPost | null;
   onClose?: (time: string) => void;
+  onDelete?: () => void;
 }) {
   const [openDialog, setOpenDialog] = useState(false);
   const router = useRouter();
 
-  function handleDeleteClick() {}
+  async function handleDeleteClick() {
+    try {
+      await deletePost(data?._id);
+      setOpenDialog(false);
+      showToast(`Delete Success`);
+      onDelete?.();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <>
@@ -40,34 +53,31 @@ export default function PostList({
         <Box>
           <List>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton
+                onClick={() => {
+                  const searchParams = new URLSearchParams({
+                    id: data?._id || "",
+                  });
+
+                  router.push(`/post/edit?${searchParams}`);
+                }}
+              >
                 <IconButton>
                   <EditIcon />
                 </IconButton>
-                <ListItemText
-                  primary="Edit"
-                  onClick={() => {
-                    const searchParams = new URLSearchParams({
-                      id: data?._id || "",
-                    });
-
-                    router.push(`/post/edit?${searchParams}`);
-                  }}
-                />
+                <ListItemText primary="Edit" />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton
+                onClick={() => {
+                  setOpenDialog(true);
+                }}
+              >
                 <IconButton>
                   <DeleteIcon />
                 </IconButton>
-                <ListItemText
-                  primary="Delete"
-                  color="error"
-                  onClick={() => {
-                    setOpenDialog(true);
-                  }}
-                />
+                <ListItemText primary="Delete" color="error" />
               </ListItemButton>
             </ListItem>
           </List>

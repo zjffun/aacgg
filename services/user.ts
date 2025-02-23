@@ -1,7 +1,6 @@
 import { captureException } from "@sentry/nextjs";
 import { showToast } from "@/app/components/Toast";
-import puter from "./puter";
-import poster from "./poster";
+import { poster, puter } from "./baseFetch";
 
 export async function updateUserInfo(data) {
   try {

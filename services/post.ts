@@ -1,7 +1,6 @@
 import { showToast } from "@/app/components/Toast";
 import captureException from "@/utils/captureException";
-import poster from "./poster";
-import puter from "./puter";
+import { poster, puter, deleter } from "./baseFetch";
 
 let homePostsKey = 0;
 
@@ -20,7 +19,7 @@ export async function createPost(data) {
     return result;
   } catch (error) {
     captureException(error);
-    showToast("Publish Error");
+    showToast("Publish Failed");
     return false;
   }
 }
@@ -32,7 +31,19 @@ export async function updatePost(data) {
     return result;
   } catch (error) {
     captureException(error);
-    showToast("Edit Error");
+    showToast("Edit Failed");
+    return false;
+  }
+}
+
+export async function deletePost(id) {
+  try {
+    const result = await deleter(`/api/post/${id}`, {});
+
+    return result;
+  } catch (error) {
+    captureException(error);
+    showToast("Delete Failed");
     return false;
   }
 }
