@@ -7,6 +7,7 @@ import useSWRFetcher from "@/hooks/useSWRFetcher";
 import { useState } from "react";
 
 export default function Page() {
+  const [searchValue, setSearchValue] = useState<string>("");
   const [lastItemCreateTime, setLastItemCreateTime] = useState<string>("");
 
   const {
@@ -15,12 +16,22 @@ export default function Page() {
     isLoading,
   } = useSWRFetcher<IPost[]>(`/api/current-user-posts`, {
     time: lastItemCreateTime,
+    search: searchValue,
   });
 
   return (
     <>
       <GoBackAppBar title="Your Content"></GoBackAppBar>
+
       <PostList
+        onSearch={(value) => {
+          if (value !== searchValue) {
+            setSearchValue(value);
+            setLastItemCreateTime("");
+            window.scrollTo(0, 0);
+          }
+        }}
+        searchValue={searchValue}
         newData={newData}
         error={error}
         isLoading={isLoading}

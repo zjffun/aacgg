@@ -1,12 +1,15 @@
 "use client";
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   Avatar,
   Box,
   CardContent,
   CardHeader,
   IconButton,
+  InputBase,
+  Paper,
   Tooltip,
 } from "@mui/material";
 import Card from "@mui/material/Card";
@@ -45,19 +48,29 @@ export default function PostList({
   newData,
   error,
   isLoading,
+  searchValue,
+  onSearch,
   changeLastItemCreateTime,
 }: {
   error?: Error;
   isLoading?: boolean;
   newData?: IPost[];
+  searchValue?: string;
+  onSearch?: (value: string) => void;
   changeLastItemCreateTime?: (time: string) => void;
 }) {
   const [data, setData] = useState<IPost[]>([]);
   const [end, setEnd] = useState(false);
+  const [inputSearchValue, setInputSearchValue] = useState("");
   const [showingDrawer, setShowingDrawer] = useState(false);
   const [currentData, setCurrentData] = useState<IPost | null>(null);
 
   const observer = useRef<IntersectionObserver>();
+
+  useEffect(() => {
+    setData([]);
+    setEnd(false);
+  }, [searchValue]);
 
   useEffect(() => {
     if (!newData) {
@@ -109,6 +122,46 @@ export default function PostList({
         p: 2,
       }}
     >
+      <Paper
+        sx={{
+          p: "2px 4px",
+          mb: 1,
+          display: "flex",
+          alignItems: "center",
+          position: "sticky",
+          top: 0,
+          zIndex: 1000,
+        }}
+      >
+        <InputBase
+          value={inputSearchValue}
+          onChange={(event) => {
+            setInputSearchValue(event.target.value);
+          }}
+          onKeyUp={(event) => {
+            if (event.key === "Enter") {
+              onSearch?.(inputSearchValue);
+            }
+          }}
+          onBlur={() => {
+            onSearch?.(inputSearchValue);
+          }}
+          sx={{ ml: 1, flex: 1 }}
+          placeholder="Search"
+          inputProps={{ "aria-label": "search " }}
+        />
+        <IconButton
+          onClick={() => {
+            onSearch?.(inputSearchValue);
+          }}
+          type="button"
+          sx={{ p: "10px" }}
+          aria-label="search"
+        >
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+
       <ul>
         {data?.map((item, index) => {
           const date = item?.updateTime ? new Date(item.updateTime) : undefined;
@@ -159,6 +212,7 @@ export default function PostList({
           );
         })}
       </ul>
+
       {isLoading && <div>loading...</div>}
       {error && <div>failed to load</div>}
       {end && <div>no more data</div>}
