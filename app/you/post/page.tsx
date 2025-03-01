@@ -3,15 +3,19 @@
 import GoBackAppBar from "@/app/components/GoBackAppBar";
 import PostList from "@/app/components/PostList";
 import { IPost } from "@/app/types";
-import fetcher from "@/services/fetcher";
-import useSWR from "swr";
+import useSWRFetcher from "@/hooks/useSWRFetcher";
+import { useState } from "react";
 
 export default function Page() {
+  const [lastItemCreateTime, setLastItemCreateTime] = useState<string>("");
+
   const {
     data: newData,
     error,
     isLoading,
-  } = useSWR<IPost[]>(`/api/current-user-posts`, fetcher);
+  } = useSWRFetcher<IPost[]>(`/api/current-user-posts`, {
+    time: lastItemCreateTime,
+  });
 
   return (
     <>
@@ -20,6 +24,7 @@ export default function Page() {
         newData={newData}
         error={error}
         isLoading={isLoading}
+        changeLastItemCreateTime={setLastItemCreateTime}
       ></PostList>
     </>
   );
