@@ -19,7 +19,7 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 export default function ImageUploader({
-  images: initialImages,
+  images,
   onChange,
   showingDelete = false,
 }: {
@@ -27,12 +27,12 @@ export default function ImageUploader({
   onChange: (images: ImageItem[]) => void;
   showingDelete?: boolean;
 }) {
-  const imagesRef = useRef<ImageItem[]>(initialImages);
+  const imagesRef = useRef<ImageItem[]>(images);
 
   // Sync ref with prop changes
   useEffect(() => {
-    imagesRef.current = initialImages;
-  }, [initialImages]);
+    imagesRef.current = images;
+  }, [images]);
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -60,26 +60,32 @@ export default function ImageUploader({
         const [img] = await uploadImages([file]);
 
         // Find and update the specific image in ref
-        const imageIndex = imagesRef.current.findIndex((d) => d.key === key);
-        if (imageIndex !== -1) {
-          imagesRef.current[imageIndex] = {
-            ...imagesRef.current[imageIndex],
-            img,
-            uploading: false,
-          };
-          onChange([...imagesRef.current]);
-        }
+        const newImages = imagesRef.current.map((d) => {
+          if (d.key === key) {
+            return {
+              ...d,
+              img,
+              uploading: false,
+            };
+          }
+          return d;
+        });
+
+        onChange(newImages);
       } catch (error) {
         // Update error state in ref
-        const imageIndex = imagesRef.current.findIndex((d) => d.key === key);
-        if (imageIndex !== -1) {
-          imagesRef.current[imageIndex] = {
-            ...imagesRef.current[imageIndex],
-            error: error as Error,
-            uploading: false,
-          };
-          onChange([...imagesRef.current]);
-        }
+        const newImages = imagesRef.current.map((d) => {
+          if (d.key === key) {
+            return {
+              ...d,
+              error: error as Error,
+              uploading: false,
+            };
+          }
+          return d;
+        });
+
+        onChange(newImages);
       }
     });
 
@@ -89,9 +95,8 @@ export default function ImageUploader({
   return (
     <>
       <PostImageList
-        images={imagesRef.current}
+        images={images}
         onChange={(newImages) => {
-          imagesRef.current = newImages;
           onChange(newImages);
         }}
         showingDelete={showingDelete}

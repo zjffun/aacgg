@@ -7,8 +7,11 @@ import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAuto
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ContentType, ImageItem, IPost } from "../../types";
+import useLocalStorageState from "use-local-storage-state";
+import pick from "lodash-es/pick";
+import { showConfirm } from "@/app/components/Confirm";
 
 const blue = {
   100: "#DAECFF",
@@ -91,9 +94,39 @@ function getInitData(data?: IPost) {
 
 export default function PostForm({ data }: { data?: IPost }) {
   const initData = getInitData(data);
+  const isEdit = initData.id;
 
   const [text, setText] = useState(initData.text);
   const [images, setImages] = useState<ImageItem[]>(initData.images);
+
+  const [draftPost, setDraftPost] = useLocalStorageState<{
+    text?: string;
+    images?: ImageItem[];
+  }>("draftPost", {
+    defaultValue: {
+      text: "",
+      images: [],
+    },
+  });
+
+  useEffect(() => {
+    if (!isEdit && (draftPost?.text || draftPost?.images?.length)) {
+      (async function () {
+        try {
+          await showConfirm({
+            content: "You have a draft before. Do you want to using draft?",
+          });
+          setText(draftPost?.text || "");
+          setImages(draftPost?.images || []);
+        } catch {
+          setDraftPost({});
+        }
+      })();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const router = useRouter();
 
   async function submit() {
@@ -114,7 +147,7 @@ export default function PostForm({ data }: { data?: IPost }) {
 
     let result;
 
-    if (initData.id) {
+    if (isEdit) {
       result = await updatePost({
         id: initData.id,
         contents,
@@ -127,6 +160,7 @@ export default function PostForm({ data }: { data?: IPost }) {
 
     if (result) {
       increaseHomePostsKey();
+      setDraftPost({});
       router.back();
     }
   }
@@ -142,11 +176,29 @@ export default function PostForm({ data }: { data?: IPost }) {
         <TextareaAutosize
           minRows={6}
           value={text}
-          onChange={(event) => setText(event.target.value)}
+          onChange={(event) => {
+            setText(event.target.value);
+            setDraftPost((draft) => {
+              return {
+                ...draft,
+                text: event.target.value,
+              };
+            });
+          }}
         ></TextareaAutosize>
         <ImageUploader
           images={images}
-          onChange={setImages}
+          onChange={(images) => {
+            setImages(images);
+            setDraftPost((draft) => {
+              return {
+                ...draft,
+                images: images
+                  .filter((d) => d.img)
+                  .map((d) => pick(d, ["key", "img"])),
+              };
+            });
+          }}
           showingDelete={true}
         />
         {/* TODO: loading */}

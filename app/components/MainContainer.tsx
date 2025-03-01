@@ -5,6 +5,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import MainNavigation from "./MainNavigation";
 import { ToastComp } from "./Toast";
 import { usePathname } from "next/navigation";
+import { ConfirmComp } from "./Confirm";
 
 const theme = createTheme({
   typography: {
@@ -41,6 +42,7 @@ export default function RootLayout({
         </Box>
       </Container>
       <ToastComp />
+      <ConfirmComp />
     </ThemeProvider>
   );
 }
