@@ -2,7 +2,20 @@
 
 import PostImageList from "@/app/components/PostImagePreviewList";
 import { ContentType, IPostContent } from "@/app/types";
-import { Typography } from "@mui/material";
+import { isValidUrl } from "@/utils/url";
+import { Link, Typography } from "@mui/material";
+
+function getLine(str) {
+  if (isValidUrl(str)) {
+    return (
+      <Link key={null} href={str} target={"_blank"}>
+        {str}
+      </Link>
+    );
+  }
+
+  return str;
+}
 
 export default function PostContents(props: { contents: IPostContent[] }) {
   const text = props.contents.filter((item) => item.type === ContentType.TEXT);
@@ -13,18 +26,22 @@ export default function PostContents(props: { contents: IPostContent[] }) {
   return (
     <div>
       {text.map((item) => {
-        return (
-          <Typography
-            variant="body1"
-            key={null}
-            sx={{
-              whiteSpace: "pre-wrap",
-              wordBreak: "break-word",
-            }}
-          >
-            {item.content}
-          </Typography>
-        );
+        const content = item.content || "";
+
+        return content.split("\n").map((str) => {
+          return (
+            <Typography
+              variant="body1"
+              key={null}
+              sx={{
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
+              }}
+            >
+              {getLine(str)}
+            </Typography>
+          );
+        });
       })}
 
       <PostImageList
