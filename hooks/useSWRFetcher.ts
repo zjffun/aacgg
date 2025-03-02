@@ -12,7 +12,7 @@ function getKey(path: string, params?: Record<string, string>) {
 
 export default function useSWRFetcher<T>(
   path: string,
-  params?: Record<string, string>
+  params?: Record<string, string>,
 ) {
   const key = getKey(path, params);
 

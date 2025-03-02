@@ -113,7 +113,7 @@ export default function PostList({
 
       if (node) observer.current?.observe(node);
     },
-    [changeLastItemCreateTime, data]
+    [changeLastItemCreateTime, data],
   );
 
   return (

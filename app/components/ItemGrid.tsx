@@ -1,9 +1,8 @@
 "use client";
 
-import * as React from "react";
+import { useRouter } from "@/hooks/useNavRouter";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
-import { useRouter } from "next/navigation";
 import { IItem } from "../types";
 import ItemCard from "./ItemCard";
 import { showToast } from "./Toast";

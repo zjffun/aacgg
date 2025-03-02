@@ -18,7 +18,7 @@ import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import ForgotPassword from "./components/ForgotPassword";
 import { GitHubIcon } from "../components/CustomIcons";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/hooks/useNavRouter";
 import openGithubSignIn from "@/utils/openGithubSignIn";
 import { showToast } from "../components/Toast";
 import { passwordLogin } from "@/services/user";

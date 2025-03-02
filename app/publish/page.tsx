@@ -1,10 +1,10 @@
 "use client";
 
 import { PrivatePageGuard } from "@/components/PrivatePageGuard";
+import { useRouter } from "@/hooks/useNavRouter";
 import { createItem } from "@/services/item";
 import { Tab, Tabs } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ItemType } from "../types";
 import AnimeForm from "./components/AnimeForm";

@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "@/hooks/useNavRouter";
+import { deletePost } from "@/services/post";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import {
@@ -16,10 +18,8 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { IPost } from "../types";
 import { useState } from "react";
-import { deletePost } from "@/services/post";
+import { IPost } from "../types";
 import { showToast } from "./Toast";
 
 export default function ActionsDrawer({

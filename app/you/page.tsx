@@ -13,7 +13,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/hooks/useNavRouter";
 import getAvatarUrl from "../common/getAvatarUrl";
 
 export default function AlignItemsList() {

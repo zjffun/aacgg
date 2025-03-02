@@ -17,7 +17,7 @@ import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import { GitHubIcon } from "../components/CustomIcons";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/hooks/useNavRouter";
 import openGithubSignIn from "@/utils/openGithubSignIn";
 import { showToast } from "../components/Toast";
 import { createUser } from "@/services/user";

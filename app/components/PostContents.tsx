@@ -7,7 +7,7 @@ import { Typography } from "@mui/material";
 export default function PostContents(props: { contents: IPostContent[] }) {
   const text = props.contents.filter((item) => item.type === ContentType.TEXT);
   const images = props.contents.filter(
-    (item) => item.type === ContentType.IMAGE
+    (item) => item.type === ContentType.IMAGE,
   );
 
   return (

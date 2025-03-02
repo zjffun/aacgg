@@ -14,7 +14,7 @@ function Content() {
 
   const { isLoading, error, data } = useSWR<IPost>(
     `/api/my-post/${id}`,
-    fetcher
+    fetcher,
   );
 
   if (isLoading) return <div>Loading...</div>;

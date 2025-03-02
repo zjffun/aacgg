@@ -1,17 +1,17 @@
 "use client";
 
+import { showConfirm } from "@/app/components/Confirm";
 import ImageUploader from "@/app/components/ImageUploader";
+import { useRouter } from "@/hooks/useNavRouter";
 import { createPost, increaseHomePostsKey, updatePost } from "@/services/post";
-import { Stack, styled } from "@mui/material";
 import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
+import { Stack, styled } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { ContentType, ImageItem, IPost } from "../../types";
-import useLocalStorageState from "use-local-storage-state";
 import pick from "lodash-es/pick";
-import { showConfirm } from "@/app/components/Confirm";
+import { useEffect, useState } from "react";
+import useLocalStorageState from "use-local-storage-state";
+import { ContentType, ImageItem, IPost } from "../../types";
 
 const blue = {
   100: "#DAECFF",
@@ -67,7 +67,7 @@ const TextareaAutosize = styled(BaseTextareaAutosize)(
     &:focus-visible {
       outline: 0;
     }
-  `
+  `,
 );
 
 function getInitData(data?: IPost) {
@@ -93,6 +93,8 @@ function getInitData(data?: IPost) {
 }
 
 export default function PostForm({ data }: { data?: IPost }) {
+  const router = useRouter();
+
   const initData = getInitData(data);
   const isEdit = initData.id;
 
@@ -126,8 +128,6 @@ export default function PostForm({ data }: { data?: IPost }) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const router = useRouter();
 
   async function submit() {
     const contents = [

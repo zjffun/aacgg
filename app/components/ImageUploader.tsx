@@ -35,7 +35,7 @@ export default function ImageUploader({
   }, [images]);
 
   const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     if (!event.target.files?.length) return;
 

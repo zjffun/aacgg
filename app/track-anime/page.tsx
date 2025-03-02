@@ -37,7 +37,7 @@ function TarckItems() {
     `/api/track-items`,
     {
       type: ItemType.ANIME,
-    }
+    },
   );
 
   if (isLoading) {
@@ -66,7 +66,7 @@ function ComicItems() {
     `/api/track-items`,
     {
       type: ItemType.COMIC,
-    }
+    },
   );
 
   if (isLoading) {

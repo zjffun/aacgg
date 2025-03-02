@@ -1,9 +1,9 @@
 "use client";
 
+import { useRouter } from "@/hooks/useNavRouter";
 import { AddBoxOutlined } from "@mui/icons-material";
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
-import { usePathname, useRouter } from "next/navigation";
-
+import { usePathname } from "next/navigation";
 import { PageEnum, pagePathanmeMap, pathnamePageMap } from "../common/pages";
 
 export default function MainNavigation() {

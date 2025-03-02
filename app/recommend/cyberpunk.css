@@ -99,7 +99,8 @@ body {
 
 .cyberpunk-font-og,
 .cyberpunk-font-og * {
-  text-shadow: var(--cyan-cyberpunk-font1) 1px 1px,
+  text-shadow:
+    var(--cyan-cyberpunk-font1) 1px 1px,
     var(--cyan-cyberpunk-font2) 2px 2px;
   color: var(--yellow-cyberpunk-font);
 }
@@ -500,7 +501,8 @@ body {
   right: 0;
   bottom: 0;
   background: var(--button-shadow-primary);
-  text-shadow: 2px 2px var(--button-shadow-primary),
+  text-shadow:
+    2px 2px var(--button-shadow-primary),
     -2px -2px var(--button-shadow-secondary);
   clip-path: var(--button-clip);
   animation: glitch 4s infinite;
@@ -709,27 +711,37 @@ body {
   2% {
     clip-path: polygon(0 40%, 0 100%, 100% 100%, 100% 40%);
     transform: translateX(0);
-    text-shadow: var(--cyan) 1px 1px, var(--yellow) -1px -1px;
+    text-shadow:
+      var(--cyan) 1px 1px,
+      var(--yellow) -1px -1px;
   }
   4% {
     clip-path: polygon(0 40%, 0 100%, 100% 100%, 100% 40%);
     transform: translateX(-1rem);
-    text-shadow: var(--cyan) 1px 1px, var(--yellow) -1px -1px;
+    text-shadow:
+      var(--cyan) 1px 1px,
+      var(--yellow) -1px -1px;
   }
   6% {
     clip-path: polygon(0 40%, 0 100%, 100% 100%, 100% 40%);
     transform: translateX(1rem);
-    text-shadow: var(--cyan) 1px 1px, var(--yellow) -1px -1px;
+    text-shadow:
+      var(--cyan) 1px 1px,
+      var(--yellow) -1px -1px;
   }
   8% {
     clip-path: polygon(0 40%, 0 100%, 100% 100%, 100% 40%);
     transform: translateX(0);
-    text-shadow: var(--cyan) 1px 1px, var(--yellow) -1px -1px;
+    text-shadow:
+      var(--cyan) 1px 1px,
+      var(--yellow) -1px -1px;
   }
   12% {
     clip-path: polygon(0 10%, 0 40%, 100% 40%, 100% 10%);
     transform: translateX(0);
-    text-shadow: var(--cyan) 1px 1px, var(--yellow) -1px -1px;
+    text-shadow:
+      var(--cyan) 1px 1px,
+      var(--yellow) -1px -1px;
   }
   14% {
     clip-path: var(--og-clip-path);

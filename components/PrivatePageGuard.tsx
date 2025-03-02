@@ -1,6 +1,6 @@
 import useUser from "@/hooks/useUser";
 import { CircularProgress } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/hooks/useNavRouter";
 import { useEffect } from "react";
 
 interface PrivatePageGuardProps {

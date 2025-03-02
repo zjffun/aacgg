@@ -109,7 +109,7 @@ function Content() {
       <div
         className={classNames(
           styles.footer,
-          screenshot && styles.footerScreenshot
+          screenshot && styles.footerScreenshot,
         )}
       ></div>
     </div>

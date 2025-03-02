@@ -4,6 +4,7 @@ import getAvatarUrl from "@/app/common/getAvatarUrl";
 import GoBackAppBar from "@/app/components/GoBackAppBar";
 import { showToast } from "@/app/components/Toast";
 import { PrivatePageGuard } from "@/components/PrivatePageGuard";
+import { useRouter } from "@/hooks/useNavRouter";
 import useUser from "@/hooks/useUser";
 import { updateUserInfo } from "@/services/user";
 import { Camera } from "@mui/icons-material";
@@ -16,7 +17,6 @@ import {
   IconButton,
   TextField,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function EditProfile() {

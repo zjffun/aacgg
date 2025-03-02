@@ -4,7 +4,7 @@ import useUser from "@/hooks/useUser";
 import { Edit } from "@mui/icons-material";
 import { Avatar, Box, Button, Container, Fab, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/hooks/useNavRouter";
 import getAvatarUrl from "../common/getAvatarUrl";
 import GoBackAppBar from "../components/GoBackAppBar";
 import { signOut } from "@/services/user";

@@ -25,7 +25,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import SelectItemsDrawer from "./components/SeleteItemsDrawer";
 import { createRecommend, updateRecommend } from "@/services/recommend";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/hooks/useNavRouter";
 import useUser from "@/hooks/useUser";
 
 function SortableItem({ item, onDelete, disabled }) {
@@ -111,7 +111,7 @@ export default function RecommendPage() {
       //   delay: 200,
       //   tolerance: 10,
       // },
-    })
+    }),
   );
 
   if (isLoading || isLoadingUser) {
@@ -216,7 +216,7 @@ export default function RecommendPage() {
                 item={item}
                 onDelete={() => {
                   setItems((prev) =>
-                    prev.filter((prevItem) => prevItem.id !== item.id)
+                    prev.filter((prevItem) => prevItem.id !== item.id),
                   );
                 }}
               />

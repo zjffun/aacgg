@@ -1,8 +1,8 @@
 "use client";
 
+import { useRouter } from "@/hooks/useNavRouter";
 import { ArrowBack } from "@mui/icons-material";
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
 
 const GoBackAppBar = ({ title }: { title: string }) => {
   const router = useRouter();
@@ -18,7 +18,7 @@ const GoBackAppBar = ({ title }: { title: string }) => {
         <IconButton
           edge="start"
           color="inherit"
-          onClick={() => router.back()}
+          onClick={router.back}
           aria-label="back"
         >
           <ArrowBack />

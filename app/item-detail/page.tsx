@@ -1,15 +1,24 @@
 "use client";
 
+import { useRouter } from "@/hooks/useNavRouter";
 import useSWRFetcher from "@/hooks/useSWRFetcher";
-import { Box, Button, Stack, Typography, AppBar, IconButton, Toolbar } from "@mui/material";
-import { useRouter, useSearchParams } from "next/navigation";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import {
+  AppBar,
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import getSubItems from "../common/getSubItems";
 import FavoriteButton from "../components/FavoriteButton";
 import ProgressButton from "../components/ProgressButton";
 import useProgress from "../hooks/useProgress";
 import { IAnime, IEpisode, IProgress } from "../types";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 function EpisodeItem({
   progress,
@@ -28,7 +37,7 @@ function Content() {
   const { progress, updateProgress } = useProgress({ id });
 
   const { data, error, isLoading } = useSWRFetcher<IAnime>(
-    `/api/get-item/${id}`
+    `/api/get-item/${id}`,
   );
 
   const subItem = getSubItems(data);
@@ -49,16 +58,16 @@ function Content() {
     <>
       <AppBar position="sticky" color="default">
         <Toolbar>
-          <IconButton 
-            edge="start" 
-            color="inherit" 
-            onClick={() => router.back()}
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={router.back}
             sx={{ mr: 2 }}
           >
             <ArrowBackIcon />
           </IconButton>
           <Typography variant="h6" component="div">
-            {data?.name || 'Details'}
+            {data?.name || "Details"}
           </Typography>
         </Toolbar>
       </AppBar>
