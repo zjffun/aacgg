@@ -3,15 +3,12 @@
 import PostImageList from "@/app/components/PostImagePreviewList";
 import { ContentType, IPostContent } from "@/app/types";
 import { isValidUrl } from "@/utils/url";
-import { Link, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import UrlComponent from "./UrlComponent";
 
 function getLine(str) {
   if (isValidUrl(str)) {
-    return (
-      <Link key={null} href={str} target={"_blank"}>
-        {str}
-      </Link>
-    );
+    return <UrlComponent key={null} url={str}></UrlComponent>;
   }
 
   return str;
@@ -36,6 +33,8 @@ export default function PostContents(props: { contents: IPostContent[] }) {
               sx={{
                 whiteSpace: "pre-wrap",
                 wordBreak: "break-word",
+                // show empty line
+                minHeight: "1em",
               }}
             >
               {getLine(str)}

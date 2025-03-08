@@ -5,11 +5,11 @@ import ImageUploader from "@/app/components/ImageUploader";
 import { useRouter } from "@/hooks/useNavRouter";
 import { createPost, increaseHomePostsKey, updatePost } from "@/services/post";
 import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
-import { Stack, styled } from "@mui/material";
+import { Stack, styled, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import pick from "lodash-es/pick";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useLocalStorageState from "use-local-storage-state";
 import { ContentType, ImageItem, IPost } from "../../types";
 
@@ -129,6 +129,20 @@ export default function PostForm({ data }: { data?: IPost }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const loading = useMemo(() => {
+    const uploading = images.some((img) => {
+      return img.uploading;
+    });
+
+    if (uploading) {
+      return {
+        message: "Waiting for images upload",
+      };
+    }
+
+    return;
+  }, [images]);
+
   async function submit() {
     const contents = [
       {
@@ -201,10 +215,16 @@ export default function PostForm({ data }: { data?: IPost }) {
           }}
           showingDelete={true}
         />
-        {/* TODO: loading */}
-        <Button sx={{ w: "100%" }} variant="contained" onClick={submit}>
+
+        <Button
+          disabled={Boolean(loading)}
+          sx={{ w: "100%" }}
+          variant="contained"
+          onClick={submit}
+        >
           Post
         </Button>
+        <Typography variant="body2">{loading?.message}</Typography>
       </Stack>
     </Box>
   );

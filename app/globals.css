@@ -6,4 +6,10 @@ html {
   font-size: 14px;
 
   --navigation-height: 56px;
+  --mobile-s: 320px;
+}
+
+.videoEmbed {
+  max-width: var(--mobile-s);
+  width: 100%;
 }
