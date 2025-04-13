@@ -15,7 +15,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import Button from "@mui/material/Button";
 import { ReactElement, useState } from "react";
 
-const size = 164;
+const size = 300;
 
 export default function PostImageList({
   images,

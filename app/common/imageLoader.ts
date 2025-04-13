@@ -18,7 +18,7 @@ const imageLoader = ({
       return originalUrl;
     }
 
-    return `https://aacgg.com/cdn-cgi/image/width=${size},height=${size},fix=crop,format=auto,quality=75/${originalUrl}`;
+    return `https://aacgg.com/cdn-cgi/image/width=${size},fix=crop,format=auto,quality=75/${originalUrl}`;
   }
 
   if (file) {

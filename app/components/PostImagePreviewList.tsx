@@ -9,7 +9,7 @@ import ImageListItem from "@mui/material/ImageListItem";
 
 import "react-photo-view/dist/react-photo-view.css";
 
-const size = 164;
+const size = 300;
 const maxCols = 3;
 
 export default function ImagePreviewList({ images }: { images }) {
@@ -26,8 +26,8 @@ export default function ImagePreviewList({ images }: { images }) {
             <ImageListItem sx={{ maxHeight: "24rem", overflow: "hidden" }}>
               <Image
                 src={imageLoader({ ...item, size })}
-                width={164}
-                height={164}
+                width={300}
+                height={300}
                 loading="lazy"
                 alt=""
               />
