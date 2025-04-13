@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter as useNestRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import useSessionStorageState from "use-session-storage-state";
 
 const max = 100;
@@ -17,15 +17,8 @@ const useRouter = () => {
   );
 
   const push = useCallback(
-    (path: string, params?: Record<string, string>) => {
+    (href: string) => {
       setHistory([location.href, ...history].slice(0, max));
-
-      let href = path;
-
-      if (params) {
-        const searchParams = new URLSearchParams(params);
-        href = `${href}?${searchParams}`;
-      }
 
       router.push(href);
     },
@@ -41,7 +34,15 @@ const useRouter = () => {
     }
   }, [router, push, history, setHistory]);
 
-  return { push, back };
+  const navRouter = useRef({
+    push,
+    back,
+  });
+
+  navRouter.current.push = push;
+  navRouter.current.back = back;
+
+  return navRouter.current;
 };
 
 export { useRouter };
