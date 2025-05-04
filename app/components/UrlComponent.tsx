@@ -21,24 +21,29 @@ const youtubeVideoConfig = {
 function getYoutubeVideoInfo(url) {
   try {
     const urlInstance = new URL(url);
-    if (urlInstance.host === "www.youtube.com") {
+    if (urlInstance.host !== "www.youtube.com") {
+      return;
+    }
+
+    const vid = urlInstance.searchParams.get("v");
+    if (vid) {
       return {
         type: YOUTUBE_VIDEO_TYPE.VIDEO,
-        id: urlInstance.searchParams.get("v"),
+        id: vid,
       };
     }
 
     const paths = urlInstance.pathname.split("/");
-
-    if (paths[1] === "shorts") {
+    const sid = paths[2];
+    if (paths[1] === "shorts" && sid) {
       return {
         type: YOUTUBE_VIDEO_TYPE.SHORT,
-        id: paths[2],
+        id: sid,
       };
     }
   } catch (error) {
     console.error(error);
-    return {};
+    return;
   }
 }
 
@@ -66,13 +71,14 @@ export default function UrlComponent(props: { url: string }) {
         allowFullScreen
       ></iframe>
     );
-  } else {
-    content = (
+  }
+
+  return (
+    <Box>
       <Link href={url} target={"_blank"}>
         {url}
       </Link>
-    );
-  }
-
-  return <Box>{content}</Box>;
+      {content}
+    </Box>
+  );
 }

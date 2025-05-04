@@ -1,6 +1,11 @@
 export function isValidUrl(url) {
   try {
-    new URL(url);
+    const urlInstance = new URL(url);
+
+    if (!urlInstance?.host) {
+      return false;
+    }
+
     return true;
   } catch {
     return false;
