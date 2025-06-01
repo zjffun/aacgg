@@ -4,6 +4,7 @@ import GoBackAppBar from "@/app/components/GoBackAppBar";
 import PostList from "@/app/components/PostList";
 import { IPost } from "@/app/types";
 import useSWRFetcher from "@/hooks/useSWRFetcher";
+import { getPostsRefreshKey } from "@/services/post";
 import { useState } from "react";
 
 export default function Page() {
@@ -15,6 +16,7 @@ export default function Page() {
     error,
     isLoading,
   } = useSWRFetcher<IPost[]>(`/api/current-user-posts`, {
+    key: getPostsRefreshKey(),
     time: lastItemCreateTime,
     search: searchValue,
   });

@@ -3,9 +3,9 @@
 import { showConfirm } from "@/app/components/Confirm";
 import ImageUploader from "@/app/components/ImageUploader";
 import { useRouter } from "@/hooks/useNavRouter";
-import { createPost, increaseHomePostsKey, updatePost } from "@/services/post";
+import { createPost, increasePostsKey, updatePost } from "@/services/post";
 import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
-import { Stack, styled, Typography } from "@mui/material";
+import { Stack, styled, Switch, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import pick from "lodash-es/pick";
@@ -89,6 +89,7 @@ function getInitData(data?: IPost) {
     id: data?._id,
     text,
     images,
+    isPublic: data?.isPublic === true,
   };
 }
 
@@ -100,6 +101,7 @@ export default function PostForm({ data }: { data?: IPost }) {
 
   const [text, setText] = useState(initData.text);
   const [images, setImages] = useState<ImageItem[]>(initData.images);
+  const [isPublic, setIsPublic] = useState<boolean>(initData.isPublic);
 
   const [draftPost, setDraftPost] = useLocalStorageState<{
     text?: string;
@@ -161,22 +163,29 @@ export default function PostForm({ data }: { data?: IPost }) {
 
     let result;
 
+    const postCommonData = {
+      contents,
+      isPublic,
+    };
+
     if (isEdit) {
       result = await updatePost({
         id: initData.id,
-        contents,
+        ...postCommonData,
       });
     } else {
       result = await createPost({
-        contents,
+        ...postCommonData,
       });
     }
 
-    if (result) {
-      increaseHomePostsKey();
-      setDraftPost({});
-      router.back();
+    if (!result) {
+      return;
     }
+
+    increasePostsKey();
+    setDraftPost({});
+    router.push("/you/post");
   }
 
   return (
@@ -215,6 +224,17 @@ export default function PostForm({ data }: { data?: IPost }) {
           }}
           showingDelete={true}
         />
+
+        <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+          <Typography>Private</Typography>
+          <Switch
+            checked={isPublic}
+            onChange={(event) => {
+              setIsPublic(Boolean(event?.target?.checked));
+            }}
+          />
+          <Typography>Public</Typography>
+        </Stack>
 
         <Button
           disabled={Boolean(loading)}

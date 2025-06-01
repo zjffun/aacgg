@@ -1,7 +1,7 @@
 "use client";
 
 import useSWRFetcher from "@/hooks/useSWRFetcher";
-import { getHomePostsRefreshKey } from "@/services/post";
+import { getPostsRefreshKey } from "@/services/post";
 import { useState } from "react";
 import PostList from "../components/PostList";
 import { IPost } from "../types";
@@ -15,7 +15,7 @@ export default function Page() {
     error,
     isLoading,
   } = useSWRFetcher<IPost[]>(`/api/home-posts`, {
-    key: getHomePostsRefreshKey(),
+    key: getPostsRefreshKey(),
     time: lastItemCreateTime,
     search: searchValue,
   });

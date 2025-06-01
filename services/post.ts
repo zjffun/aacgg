@@ -4,11 +4,11 @@ import { poster, puter, deleter } from "./baseFetch";
 
 let homePostsKey = 0;
 
-export function getHomePostsRefreshKey() {
+export function getPostsRefreshKey() {
   return String(homePostsKey);
 }
 
-export function increaseHomePostsKey() {
+export function increasePostsKey() {
   homePostsKey++;
 }
 

@@ -26,6 +26,7 @@ export interface IPost {
   updateTime: string;
   creator: IUser;
   contents: IPostContent[];
+  isPublic?: boolean;
 }
 
 export interface IPageInfo {

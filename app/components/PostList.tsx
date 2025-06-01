@@ -7,9 +7,11 @@ import {
   Box,
   CardContent,
   CardHeader,
+  Chip,
   IconButton,
   InputBase,
   Paper,
+  Stack,
   Tooltip,
 } from "@mui/material";
 import Card from "@mui/material/Card";
@@ -197,11 +199,14 @@ export default function PostList({
                   }
                   title={item?.creator?.name}
                   subheader={
-                    <div>
+                    <Stack direction="row" spacing={1} alignItems="center">
                       <Tooltip title={getFormatedTime(date)}>
                         <span>{timeAgo}</span>
                       </Tooltip>
-                    </div>
+                      {Boolean(item.isPublic) && (
+                        <Chip label="Public" size="small" />
+                      )}
+                    </Stack>
                   }
                 />
                 <CardContent>
