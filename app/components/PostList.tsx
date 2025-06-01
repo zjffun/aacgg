@@ -51,6 +51,7 @@ export default function PostList({
   error,
   isLoading,
   searchValue,
+  showingPublicChip,
   onSearch,
   changeLastItemCreateTime,
 }: {
@@ -58,6 +59,7 @@ export default function PostList({
   isLoading?: boolean;
   newData?: IPost[];
   searchValue?: string;
+  showingPublicChip?: boolean;
   onSearch?: (value: string) => void;
   changeLastItemCreateTime?: (time: string) => void;
 }) {
@@ -203,7 +205,7 @@ export default function PostList({
                       <Tooltip title={getFormatedTime(date)}>
                         <span>{timeAgo}</span>
                       </Tooltip>
-                      {Boolean(item.isPublic) && (
+                      {showingPublicChip && Boolean(item.isPublic) && (
                         <Chip label="Public" size="small" />
                       )}
                     </Stack>

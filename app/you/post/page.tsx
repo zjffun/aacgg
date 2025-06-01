@@ -38,6 +38,7 @@ export default function Page() {
         error={error}
         isLoading={isLoading}
         changeLastItemCreateTime={setLastItemCreateTime}
+        showingPublicChip={true}
       ></PostList>
     </>
   );
